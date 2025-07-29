@@ -1,15 +1,26 @@
-📝 LOGO REQUIRED
+📝 ASSETS REQUIRED
 
-Please add your logo.png file to the public/ folder before deploying.
+Please add these files to the public/ folder before deploying:
 
-Required file: public/logo.png
+🎨 LOGO (Required):
+- public/logo.png
+  - Format: PNG with transparency
+  - Size: 400-800px width (responsive)
+  - High resolution for retina displays
+  - Optimized file size (<200KB)
 
-Recommended specifications:
-- Format: PNG with transparency
-- Size: 400-800px width (responsive)
-- High resolution for retina displays
-- Optimized file size (<200KB)
+🔖 FAVICON FILES (Required):
+- public/favicon.ico (16x16, 32x32, 48x48)
+- public/favicon-16x16.png
+- public/favicon-32x32.png
+- public/apple-touch-icon.png (180x180)
+- public/android-chrome-192x192.png
+- public/android-chrome-512x512.png
 
-The logo will be displayed at the top of your minting site replacing the text header.
+📱 SOCIAL MEDIA (Optional):
+- public/og-image.png (1200x630 for social sharing)
 
-After adding logo.png, you can delete this file. 
+🛠️ Quick Generation:
+Use favicon.io or realfavicongenerator.net to create all favicon files from your logo.
+
+After adding all assets, you can delete this file. 

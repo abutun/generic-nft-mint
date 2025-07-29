@@ -13,7 +13,7 @@ import { Settings, ExternalLink, Github } from 'lucide-react';
 import { ERC721_ABI } from '@/lib/contract-abi';
 
 // Feature flags
-const ENABLE_CONFIGURATION_PANEL = true; // Production mode - clean UI for end users
+const ENABLE_CONFIGURATION_PANEL = false; // Production mode - clean UI for end users
 
 /**
  * Configuration Panel Toggle

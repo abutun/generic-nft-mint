@@ -23,12 +23,19 @@ npm run deploy
 The `/out` folder contains everything you need:
 ```
 out/
-├── index.html          # Main page
-├── _next/             # JavaScript and CSS files  
-├── logo.png           # Your brand logo
-├── nft-placeholder.gif # Your NFT image
-├── favicon.ico        # Site icon
-└── ...               # All other assets
+├── index.html                    # Main page
+├── _next/                       # JavaScript and CSS files  
+├── logo.png                     # Your brand logo
+├── nft-placeholder.gif          # Your NFT image
+├── favicon.ico                  # Main favicon
+├── favicon-16x16.png           # Small favicon
+├── favicon-32x32.png           # Medium favicon
+├── apple-touch-icon.png        # iOS icon
+├── android-chrome-192x192.png  # Android icon (small)
+├── android-chrome-512x512.png  # Android icon (large)
+├── site.webmanifest            # PWA manifest
+├── og-image.png                # Social media image (optional)
+└── ...                         # All other assets
 ```
 
 **Simply upload the entire `/out` folder contents to your web server! 🌐**
@@ -51,11 +58,35 @@ cp your-war-chicks-image.gif public/nft-placeholder.gif
 # Add your logo (REQUIRED)
 cp your-logo.png public/logo.png
 
-# Replace favicon with your logo
-cp your-logo.ico public/favicon.ico
+# Add favicon files (REQUIRED)
+cp your-favicon.ico public/favicon.ico
+cp your-favicon-16x16.png public/favicon-16x16.png
+cp your-favicon-32x32.png public/favicon-32x32.png
+cp your-apple-touch-icon.png public/apple-touch-icon.png
+cp your-android-chrome-192x192.png public/android-chrome-192x192.png
+cp your-android-chrome-512x512.png public/android-chrome-512x512.png
+
+# Add social media image (OPTIONAL)
+cp your-og-image.png public/og-image.png
 ```
 
-**⚠️ Important:** Make sure to add `logo.png` to the `public` folder before deploying!
+**⚠️ Important:** Make sure to add all required assets to the `public` folder before deploying!
+
+### Favicon Requirements
+
+Generate a complete favicon package from your logo:
+
+**Required Files:**
+- `favicon.ico` (16x16, 32x32, 48x48)
+- `favicon-16x16.png`
+- `favicon-32x32.png`
+- `apple-touch-icon.png` (180x180)
+- `android-chrome-192x192.png`
+- `android-chrome-512x512.png`
+
+**Recommended Tools:**
+- [Favicon.io](https://favicon.io/) - Generate from logo
+- [RealFaviconGenerator](https://realfavicongenerator.net/) - Complete package
 
 ### Step 3: Generate Static Files
 
@@ -155,8 +186,15 @@ your-server/
     │   └── static/css/               # Stylesheets
     ├── logo.png                      # ✅ Your brand logo
     ├── nft-placeholder.gif           # ✅ Your NFT image
-    ├── favicon.ico                   # ✅ Site icon
-    └── .htaccess                     # ✅ Server config (if Apache)
+    ├── favicon.ico                   # ✅ Main favicon
+    ├── favicon-16x16.png            # ✅ Small favicon
+    ├── favicon-32x32.png            # ✅ Medium favicon
+    ├── apple-touch-icon.png         # ✅ iOS icon
+    ├── android-chrome-192x192.png   # ✅ Android icon (small)
+    ├── android-chrome-512x512.png   # ✅ Android icon (large)
+    ├── site.webmanifest             # ✅ PWA manifest
+    ├── og-image.png                 # ✅ Social media image
+    └── .htaccess                    # ✅ Server config (if Apache)
 ```
 
 ## 🔧 Customization for Different Paths
@@ -181,8 +219,10 @@ npm run deploy
 
 After upload, test these URLs:
 
+**1. Functionality Tests:**
 - [ ] `https://mint.cosmicmeta.io/war-chicks/` - Main page loads
 - [ ] Logo displays correctly at the top
+- [ ] Favicon appears in browser tab
 - [ ] Wallet connection works (MetaMask, WalletConnect)
 - [ ] Contract diagnostics show green (if enabled)
 - [ ] Images load properly (logo, NFT placeholder)
@@ -206,6 +246,15 @@ After upload, test these URLs:
 # Ensure logo.png and other image files uploaded to correct location
 # Verify permissions (755 for directories, 644 for files)
 # Make sure logo.png exists in public folder before building
+```
+
+**❌ Favicon not showing:**
+```bash
+# Clear browser cache (Ctrl+F5 or Cmd+Shift+R)
+# Check if all favicon files are uploaded correctly
+# Verify favicon.ico, favicon-16x16.png, favicon-32x32.png exist
+# Test in incognito/private browsing mode
+# Allow 24-48 hours for favicon caching to clear on some browsers
 ```
 
 **❌ Wallet connection fails:**
