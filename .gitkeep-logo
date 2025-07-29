@@ -1,0 +1,15 @@
+📝 LOGO REQUIRED
+
+Please add your logo.png file to the public/ folder before deploying.
+
+Required file: public/logo.png
+
+Recommended specifications:
+- Format: PNG with transparency
+- Size: 400-800px width (responsive)
+- High resolution for retina displays
+- Optimized file size (<200KB)
+
+The logo will be displayed at the top of your minting site replacing the text header.
+
+After adding logo.png, you can delete this file. 

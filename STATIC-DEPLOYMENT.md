@@ -25,6 +25,7 @@ The `/out` folder contains everything you need:
 out/
 ├── index.html          # Main page
 ├── _next/             # JavaScript and CSS files  
+├── logo.png           # Your brand logo
 ├── nft-placeholder.gif # Your NFT image
 ├── favicon.ico        # Site icon
 └── ...               # All other assets
@@ -41,15 +42,20 @@ Create `.env.local` file:
 NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_production_project_id
 ```
 
-### Step 2: Replace Assets (Optional)
+### Step 2: Replace Assets (Required)
 
 ```bash
 # Replace placeholder with your War Chicks artwork
 cp your-war-chicks-image.gif public/nft-placeholder.gif
 
+# Add your logo (REQUIRED)
+cp your-logo.png public/logo.png
+
 # Replace favicon with your logo
 cp your-logo.ico public/favicon.ico
 ```
+
+**⚠️ Important:** Make sure to add `logo.png` to the `public` folder before deploying!
 
 ### Step 3: Generate Static Files
 
@@ -147,6 +153,7 @@ your-server/
     ├── _next/                        # ✅ App assets
     │   ├── static/chunks/            # JavaScript bundles
     │   └── static/css/               # Stylesheets
+    ├── logo.png                      # ✅ Your brand logo
     ├── nft-placeholder.gif           # ✅ Your NFT image
     ├── favicon.ico                   # ✅ Site icon
     └── .htaccess                     # ✅ Server config (if Apache)
@@ -175,9 +182,10 @@ npm run deploy
 After upload, test these URLs:
 
 - [ ] `https://mint.cosmicmeta.io/war-chicks/` - Main page loads
+- [ ] Logo displays correctly at the top
 - [ ] Wallet connection works (MetaMask, WalletConnect)
 - [ ] Contract diagnostics show green (if enabled)
-- [ ] Images load properly
+- [ ] Images load properly (logo, NFT placeholder)
 - [ ] Mobile responsive design works
 - [ ] Error messages display correctly
 
@@ -195,8 +203,9 @@ After upload, test these URLs:
 **❌ Images not loading:**
 ```bash
 # Check file paths in browser network tab
-# Ensure image files uploaded to correct location
+# Ensure logo.png and other image files uploaded to correct location
 # Verify permissions (755 for directories, 644 for files)
+# Make sure logo.png exists in public folder before building
 ```
 
 **❌ Wallet connection fails:**

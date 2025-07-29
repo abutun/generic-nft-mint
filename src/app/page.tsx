@@ -70,11 +70,15 @@ export default function HomePage() {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            Cosmic Meta War Chicks
-          </h1>
+          <div className="mb-6">
+            <img 
+              src="/logo.png" 
+              alt="Cosmic Meta War Chicks" 
+              className="mx-auto max-w-md w-full h-auto"
+            />
+          </div>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Mint your unique Cosmic Meta War Chick - 2,222 generative art pieces living on the Ethereum blockchain. 
+            Mint your unique <strong>Cosmic Meta War Chick</strong> - 2,222 generative art pieces living on the Ethereum blockchain. 
             Connect your wallet and join the battle!
           </p>
         </div>
