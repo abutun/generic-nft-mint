@@ -13,7 +13,7 @@ import { Settings, ExternalLink, Github } from 'lucide-react';
 import { ERC721_ABI } from '@/lib/contract-abi';
 
 // Feature flags
-const ENABLE_CONFIGURATION_PANEL = false; // Set to false to hide configuration section and simplify UI
+const ENABLE_CONFIGURATION_PANEL = true; // Production mode - clean UI for end users
 
 /**
  * Configuration Panel Toggle
@@ -32,16 +32,16 @@ const ENABLE_CONFIGURATION_PANEL = false; // Set to false to hide configuration 
  * - Production: ENABLE_CONFIGURATION_PANEL = false (clean interface)
  */
 
-// Default configuration - users can modify this
+// Production configuration for Cosmic Meta War Chicks
 const DEFAULT_CONFIG: ContractConfig = {
-  address: '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8', // CMWC contract
+  address: '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8', // Cosmic Meta War Chicks contract
   abi: ERC721_ABI,
   name: 'Cosmic Meta War Chicks',
   symbol: 'CMWC',
-  description: 'Cosmic Meta is a collection of generative art series 100% stored and living on Ethereum blockchain.',
+  description: 'Cosmic Meta War Chicks - A collection of 2,222 unique generative art pieces, 100% stored and living on the Ethereum blockchain.',
   image: '/nft-placeholder.gif',
   maxSupply: 2222,
-  pricePerToken: '12500000000000000', // 0.0125 ETH in wei
+  pricePerToken: '12500000000000000', // 0.0125 ETH
   maxPerWallet: 10,
   isPublicSaleActive: true,
   isWhitelistSaleActive: false,
@@ -71,11 +71,11 @@ export default function HomePage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-            Generic NFT Mint
+            Cosmic Meta War Chicks
           </h1>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            A beautiful, configurable NFT minting interface for any ERC-721 contract. 
-            Connect your wallet and start minting!
+            Mint your unique Cosmic Meta War Chick - 2,222 generative art pieces living on the Ethereum blockchain. 
+            Connect your wallet and join the battle!
           </p>
         </div>
 
