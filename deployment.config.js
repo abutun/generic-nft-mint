@@ -8,14 +8,19 @@
  * - '' → mint.cosmicmeta.io/ (root domain)
  */
 
-const CONTRACT_ADDRESS = '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8';
+const CONTRACT_ADDRESS = '0xcadb229d7989aa25d35a8eee7539e08e43c55fe8';
 const CONTRACT_NAME = 'Cosmic Meta War Chicks';
-const CONTRACT_SHORT_NAME = 'War Chicks';
+const CONTRACT_SHORT_NAME = 'War Chick';
 const CONTRACT_SYMBOL = 'CMWC';
-const CONTRACT_DESCRIPTION = 'Cosmic Meta War Chicks - A collection of 2,222 unique generative art pieces, 100% stored and living on the Ethereum blockchain.';
+const CONTRACT_DESCRIPTION = 'Hand drawn of advanced 3D collectibles driven by powerful AI. Metaverse’s last hope. They have survived too long and know that any day could be their last.';
 const CONTRACT_MAX_SUPPLY = 2222;
 const CONTRACT_PRICE_PER_TOKEN = '12500000000000000'; // 0.0125 ETH
 const CONTRACT_MAX_PER_WALLET = 10;
+
+// External links (set to empty string to hide the link)
+const WEBSITE_URL = 'https://nft.cosmicmeta.io';
+const WHITEPAPER_URL = 'https://whitepaper.cosmicmeta.io/collections/war-chicks';
+
 const DEPLOYMENT_PATH = '/war-chicks';
 
 // Auto-generate all path configurations
@@ -29,6 +34,10 @@ const config = {
   CONTRACT_MAX_SUPPLY,
   CONTRACT_PRICE_PER_TOKEN,
   CONTRACT_MAX_PER_WALLET,
+  
+  // External links
+  WEBSITE_URL,
+  WHITEPAPER_URL,
   
   // Main deployment path
   basePath: DEPLOYMENT_PATH,

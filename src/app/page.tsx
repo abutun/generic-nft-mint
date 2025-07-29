@@ -14,7 +14,7 @@ import { ERC721_ABI } from '@/lib/contract-abi';
 import { DEPLOYMENT_PATHS } from '@/lib/deployment-paths';
 
 // Feature flags
-const ENABLE_CONFIGURATION_PANEL = false; // Production mode - clean UI for end users
+const ENABLE_CONFIGURATION_PANEL = true; // Production mode - clean UI for end users
 
 /**
  * Configuration Panel Toggle
@@ -82,6 +82,34 @@ export default function HomePage() {
             Mint your unique <strong>{DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME}</strong> - {DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. 
             Connect your wallet and join the battle!
           </p>
+          
+          {/* External Links */}
+          {(DEPLOYMENT_PATHS.WEBSITE_URL || DEPLOYMENT_PATHS.WHITEPAPER_URL) && (
+            <div className="flex justify-center gap-4 mt-8">
+              {DEPLOYMENT_PATHS.WEBSITE_URL && (
+                <a
+                  href={DEPLOYMENT_PATHS.WEBSITE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-effect border border-white/20 px-6 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 flex items-center gap-2 text-white hover:border-blue-400/50"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Website
+                </a>
+              )}
+              {DEPLOYMENT_PATHS.WHITEPAPER_URL && (
+                <a
+                  href={DEPLOYMENT_PATHS.WHITEPAPER_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-effect border border-white/20 px-6 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 flex items-center gap-2 text-white hover:border-purple-400/50"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  Whitepaper
+                </a>
+              )}
+            </div>
+          )}
         </div>
 
         <div className={`grid grid-cols-1 ${ENABLE_CONFIGURATION_PANEL ? 'lg:grid-cols-3' : 'place-items-center'} gap-8`}>

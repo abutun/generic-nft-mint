@@ -31,6 +31,22 @@ A beautiful, configurable NFT minting interface for any ERC-721 contract. Built 
 - 📁 **Static Export Ready**: Generate deployable static files for any web server
 - 🛣️ **Subdirectory Deployment**: Deploy to any URL path with automatic asset management
 
+## 📸 Preview
+
+### Development Mode
+![Development Mode](dev_mode.png)
+*Full configuration panel with contract diagnostics, information panel, and minting interface*
+
+### Production Mode  
+![Production Mode](prod_mode.png)
+*Clean, focused minting interface designed for end users*
+
+**Toggle between modes** by changing one line in `src/app/page.tsx`:
+```typescript
+const ENABLE_CONFIGURATION_PANEL = true;  // Development mode
+const ENABLE_CONFIGURATION_PANEL = false; // Production mode
+```
+
 ## Quick Start
 
 ### 1. Installation
@@ -62,12 +78,18 @@ const CONTRACT_DESCRIPTION = 'Your collection description here...';
 const CONTRACT_MAX_SUPPLY = 2222;
 const CONTRACT_PRICE_PER_TOKEN = '12500000000000000'; // 0.0125 ETH in wei
 const CONTRACT_MAX_PER_WALLET = 10;
+
+// External links (set to empty string to hide the link)
+const WEBSITE_URL = 'https://cosmicmeta.io';
+const WHITEPAPER_URL = 'https://docs.cosmicmeta.io/whitepaper';
+
 const DEPLOYMENT_PATH = '/war-chicks'; // URL path: mint.cosmicmeta.io/war-chicks/
 ```
 
 **This single file controls:**
 - ✅ Contract address and settings
 - ✅ All UI text and branding
+- ✅ External links (website, whitepaper)
 - ✅ SEO metadata and social sharing
 - ✅ Deployment URL path
 - ✅ PWA manifest generation
@@ -136,6 +158,7 @@ When you change `deployment.config.js`, these update automatically:
 - Page titles and descriptions
 - Header text and logo alt text
 - Collection name and supply count
+- External links (website, whitepaper buttons)
 
 **🔧 Technical Configuration:**
 - Contract address and parameters
@@ -162,6 +185,8 @@ Deploy multiple NFT collections using the same codebase:
 const CONTRACT_ADDRESS = '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8';
 const CONTRACT_NAME = 'Cosmic Meta War Chicks';
 const CONTRACT_SHORT_NAME = 'War Chicks';
+const WEBSITE_URL = 'https://warchicks.cosmicmeta.io';
+const WHITEPAPER_URL = 'https://docs.cosmicmeta.io/war-chicks';
 const DEPLOYMENT_PATH = '/war-chicks';
 ```
 👆 Deploys to: `mint.cosmicmeta.io/war-chicks/`
@@ -172,11 +197,34 @@ const DEPLOYMENT_PATH = '/war-chicks';
 const CONTRACT_ADDRESS = '0x1234567890abcdef1234567890abcdef12345678';
 const CONTRACT_NAME = 'Cosmic Meta Zombies';
 const CONTRACT_SHORT_NAME = 'Zombies';
+const WEBSITE_URL = 'https://zombies.cosmicmeta.io';
+const WHITEPAPER_URL = 'https://docs.cosmicmeta.io/zombies';
 const DEPLOYMENT_PATH = '/zombies';
 ```
 👆 Deploys to: `mint.cosmicmeta.io/zombies/`
 
 **Same codebase, different collections! Just change the config file! 🚀**
+
+### 🔗 External Links Configuration
+
+Add website and whitepaper links that appear as styled buttons in the header:
+
+```javascript
+// deployment.config.js
+const WEBSITE_URL = 'https://yourproject.com';          // Main project website
+const WHITEPAPER_URL = 'https://docs.yourproject.com';  // Whitepaper/documentation
+
+// Set to empty string to hide a link:
+const WEBSITE_URL = '';        // Hides website button
+const WHITEPAPER_URL = '';     // Hides whitepaper button
+```
+
+**Features:**
+- ✅ **Conditional Display**: Links only show if URL is provided
+- ✅ **Styled Buttons**: Glass morphism design matching the UI
+- ✅ **Hover Effects**: Blue hover for website, purple for whitepaper
+- ✅ **External Link Icons**: Clear visual indication of external links
+- ✅ **Security**: `target="_blank"` with `rel="noopener noreferrer"`
 
 ### Production UI Toggle
 
@@ -193,11 +241,17 @@ const ENABLE_CONFIGURATION_PANEL = false; // Set to true for development
 - ✅ Information panel with contract details
 - ✅ 3-column layout (sidebar + minting interface)
 
+![Development Mode](dev_mode.png)
+*Development Mode - Full configuration panel with diagnostics and contract information*
+
 **Production Mode** (`ENABLE_CONFIGURATION_PANEL = false`):
 - 🎯 Clean, simplified UI
 - 🎯 Minting interface centered and full-width
 - 🎯 No configuration options visible to end users
 - 🎯 Perfect for production deployments
+
+![Production Mode](prod_mode.png)
+*Production Mode - Clean, focused minting interface for end users*
 
 ### Required Contract Functions
 
