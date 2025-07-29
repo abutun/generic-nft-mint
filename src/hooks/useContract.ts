@@ -251,9 +251,52 @@ export function useContract(config: ContractConfig) {
       return tx.hash;
     } catch (error: any) {
       console.error('=== MINT ERROR DETAILS ===', error);
+      
+      // Create user-friendly error message
+      let userFriendlyMessage = 'Minting failed';
+      
+      if (error.message) {
+        const errorMessage = error.message.toLowerCase();
+        
+        // Check for user rejection patterns
+        if (errorMessage.includes('user rejected') || 
+            errorMessage.includes('user denied') || 
+            errorMessage.includes('transaction signature') ||
+            errorMessage.includes('user cancelled') ||
+            errorMessage.includes('user canceled') ||
+            errorMessage.includes('rejected by user')) {
+          userFriendlyMessage = '🚫 Transaction cancelled - You rejected the transaction in your wallet. Please try again if you want to mint.';
+        }
+        // Check for insufficient funds
+        else if (errorMessage.includes('insufficient funds') || 
+                 errorMessage.includes('insufficient balance')) {
+          userFriendlyMessage = '💰 Insufficient funds - You don\'t have enough ETH to complete this transaction (including gas fees).';
+        }
+        // Check for contract errors
+        else if (errorMessage.includes('execution reverted') || 
+                 errorMessage.includes('transaction failed')) {
+          userFriendlyMessage = '⚠️ Transaction failed - The contract rejected your transaction. Please check if the sale is active and you haven\'t exceeded limits.';
+        }
+        // Check for network issues
+        else if (errorMessage.includes('network') || 
+                 errorMessage.includes('connection') ||
+                 errorMessage.includes('rpc')) {
+          userFriendlyMessage = '🌐 Network error - Please check your internet connection and try again.';
+        }
+        // Check for gas estimation errors
+        else if (errorMessage.includes('gas') && 
+                 (errorMessage.includes('estimation') || errorMessage.includes('limit'))) {
+          userFriendlyMessage = '⛽ Gas estimation failed - The transaction might fail. Please check contract status or try with higher gas limit.';
+        }
+        // Generic fallback with original message
+        else {
+          userFriendlyMessage = `❌ ${error.message}`;
+        }
+      }
+      
       setMintState(prev => ({ 
         ...prev, 
-        error: error.message || 'Minting failed', 
+        error: userFriendlyMessage, 
         isLoading: false 
       }));
       throw error;

@@ -41,7 +41,7 @@ const DEFAULT_CONFIG: ContractConfig = {
   description: 'Cosmic Meta is a collection of generative art series 100% stored and living on Ethereum blockchain.',
   image: '/nft-placeholder.gif',
   maxSupply: 2222,
-  pricePerToken: '25000000000000000', // 0.025 ETH in wei
+  pricePerToken: '12500000000000000', // 0.0125 ETH in wei
   maxPerWallet: 10,
   isPublicSaleActive: true,
   isWhitelistSaleActive: false,
