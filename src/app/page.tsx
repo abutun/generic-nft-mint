@@ -2,24 +2,27 @@
 
 import { useState } from 'react';
 import { MintInterface } from '@/components/mint-interface';
+import { ClientOnly } from '@/components/client-only';
+import { ContractDiagnostics } from '@/components/contract-diagnostics';
 import { ContractConfig } from '@/types/contract';
 import { validateEthereumAddress } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Settings, ExternalLink, Github } from 'lucide-react';
+import { ERC721_ABI } from '@/lib/contract-abi';
 
 // Default configuration - users can modify this
 const DEFAULT_CONFIG: ContractConfig = {
-  address: '0x1234567890123456789012345678901234567890', // Replace with actual contract address
-  abi: [], // Will use the standard ERC721_ABI
-  name: 'Generic NFT Collection',
-  symbol: 'GNFT',
-  description: 'A beautiful NFT collection with unique digital artworks',
-  image: 'https://via.placeholder.com/300x300?text=NFT+Collection',
-  maxSupply: 10000,
-  pricePerToken: '50000000000000000', // 0.05 ETH in wei
-  maxPerWallet: 5,
+  address: '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8', // CMWC contract
+  abi: ERC721_ABI,
+  name: 'Cosmic Meta War Chicks',
+  symbol: 'CMWC',
+  description: 'Cosmic Meta is a collection of generative art series 100% stored and living on Ethereum blockchain.',
+  image: '/nft-placeholder.gif',
+  maxSupply: 2222,
+  pricePerToken: '25000000000000000', // 0.025 ETH in wei
+  maxPerWallet: 10,
   isPublicSaleActive: true,
   isWhitelistSaleActive: false,
 };
@@ -149,8 +152,22 @@ export default function HomePage() {
               </CardContent>
             </Card>
 
+            {/* Contract Diagnostics */}
+            <ClientOnly fallback={
+              <Card className="glass-effect border-white/20">
+                <CardContent className="flex items-center justify-center p-8">
+                  <div className="text-center">
+                    <div className="w-6 h-6 mx-auto mb-2 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <p className="text-white/70 text-sm">Loading diagnostics...</p>
+                  </div>
+                </CardContent>
+              </Card>
+            }>
+              <ContractDiagnostics address={config.address} />
+            </ClientOnly>
+
             {/* Information Panel */}
-            <Card className="glass-effect border-white/20">
+            <Card className="glass-effect border-white/20 mt-6">
               <CardHeader>
                 <CardTitle className="text-white">Information</CardTitle>
               </CardHeader>
@@ -167,7 +184,7 @@ export default function HomePage() {
                 </div>
                 <div className="pt-4 border-t border-white/10">
                   <a
-                    href="https://github.com/cosmicmeta/generic-nft-mint"
+                    href="https://github.com/abutun/generic-nft-mint"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm"
@@ -183,7 +200,20 @@ export default function HomePage() {
 
           {/* Minting Interface */}
           <div className="lg:col-span-2 flex items-center justify-center">
-            <MintInterface config={config} />
+            <ClientOnly fallback={
+              <div className="w-full max-w-md mx-auto">
+                <Card className="nft-card-glow bg-white/10 backdrop-blur-sm border-white/20">
+                  <CardContent className="flex items-center justify-center p-12">
+                    <div className="text-center">
+                      <div className="w-8 h-8 mx-auto mb-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <p className="text-white/70">Loading Web3...</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            }>
+              <MintInterface config={config} />
+            </ClientOnly>
           </div>
         </div>
 

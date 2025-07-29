@@ -29,6 +29,10 @@ export interface CollectionInfo {
   isPublicSaleActive: boolean;
   isWhitelistSaleActive: boolean;
   baseURI: string;
+  isPaused?: boolean;
+  maxMintPerWallet?: number;
+  preMintPrice?: string | null;
+  hasPresaleAccess?: boolean;
 }
 
 export interface TokenMetadata {

@@ -148,6 +148,32 @@ export function MintInterface({ config }: MintInterfaceProps) {
             </div>
           )}
 
+          {collectionInfo.isPaused && (
+            <div className="flex items-center gap-2 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
+              <AlertCircle className="w-4 h-4 text-red-400" />
+              <p className="text-red-400 text-sm">Contract is currently paused</p>
+            </div>
+          )}
+
+          {/* Debug Panel */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="p-3 bg-gray-800/50 border border-gray-600 rounded-lg">
+              <h4 className="text-white text-sm font-medium mb-2">Debug Info</h4>
+              <div className="text-xs text-gray-300 space-y-1">
+                <div>Contract Paused: {collectionInfo.isPaused ? 'Yes' : 'No'}</div>
+                <div>Main Sale Active: {collectionInfo.isPublicSaleActive ? 'Yes' : 'No'}</div>
+                <div>Has Presale Access: {collectionInfo.hasPresaleAccess ? 'Yes' : 'No'}</div>
+                <div>Main Price: {collectionInfo.pricePerToken} wei</div>
+                {collectionInfo.preMintPrice && (
+                  <div>Presale Price: {collectionInfo.preMintPrice} wei</div>
+                )}
+                <div>Max Per Wallet: {collectionInfo.maxMintPerWallet || 'Not set'}</div>
+                <div>Your Balance: {userBalance} NFTs</div>
+                <div>Supply: {collectionInfo.totalSupply}/{collectionInfo.maxSupply}</div>
+              </div>
+            </div>
+          )}
+
           {/* Quantity Selector */}
           <div className="space-y-3">
             <label className="text-white font-medium">Quantity</label>
