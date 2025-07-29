@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "dev": "npm run generate-manifest && next dev",
+    "build": "npm run generate-manifest && next build",
     "start": "next start",
-    "export": "next build",
-    "deploy": "next build && echo 'Static files generated in /out folder - ready for upload!'",
+    "export": "npm run generate-manifest && next build",
+    "deploy": "npm run generate-manifest && next build && echo 'Static files generated in /out folder - ready for upload!'",
+    "generate-manifest": "node scripts/generate-manifest.js",
     "lint": "next lint",
     "type-check": "tsc --noEmit"
   },

@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Settings, ExternalLink, Github } from 'lucide-react';
 import { ERC721_ABI } from '@/lib/contract-abi';
+import { DEPLOYMENT_PATHS } from '@/lib/deployment-paths';
 
 // Feature flags
 const ENABLE_CONFIGURATION_PANEL = false; // Production mode - clean UI for end users
@@ -32,17 +33,17 @@ const ENABLE_CONFIGURATION_PANEL = false; // Production mode - clean UI for end 
  * - Production: ENABLE_CONFIGURATION_PANEL = false (clean interface)
  */
 
-// Production configuration for Cosmic Meta War Chicks
+// Production configuration - all values from deployment.config.js
 const DEFAULT_CONFIG: ContractConfig = {
-  address: '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8', // Cosmic Meta War Chicks contract
+  address: DEPLOYMENT_PATHS.CONTRACT_ADDRESS,
   abi: ERC721_ABI,
-  name: 'Cosmic Meta War Chicks',
-  symbol: 'CMWC',
-  description: 'Cosmic Meta War Chicks - A collection of 2,222 unique generative art pieces, 100% stored and living on the Ethereum blockchain.',
-  image: '/nft-placeholder.gif',
-  maxSupply: 2222,
-  pricePerToken: '12500000000000000', // 0.0125 ETH
-  maxPerWallet: 10,
+  name: DEPLOYMENT_PATHS.CONTRACT_NAME,
+  symbol: DEPLOYMENT_PATHS.CONTRACT_SYMBOL,
+  description: DEPLOYMENT_PATHS.CONTRACT_DESCRIPTION,
+  image: DEPLOYMENT_PATHS.nftPlaceholder,
+  maxSupply: DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY,
+  pricePerToken: DEPLOYMENT_PATHS.CONTRACT_PRICE_PER_TOKEN,
+  maxPerWallet: DEPLOYMENT_PATHS.CONTRACT_MAX_PER_WALLET,
   isPublicSaleActive: true,
   isWhitelistSaleActive: false,
 };
@@ -72,13 +73,13 @@ export default function HomePage() {
         <div className="text-center mb-12">
           <div className="mb-6">
             <img 
-              src="/logo.png" 
-              alt="Cosmic Meta War Chicks" 
+              src={DEPLOYMENT_PATHS.logo} 
+              alt={DEPLOYMENT_PATHS.CONTRACT_NAME} 
               className="mx-auto max-w-md w-full h-auto"
             />
           </div>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Mint your unique <strong>Cosmic Meta War Chick</strong> - 2,222 generative art pieces living on the Ethereum blockchain. 
+            Mint your unique <strong>{DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME}</strong> - {DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. 
             Connect your wallet and join the battle!
           </p>
         </div>

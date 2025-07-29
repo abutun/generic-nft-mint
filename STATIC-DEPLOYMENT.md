@@ -4,6 +4,12 @@
 
 This guide shows how to generate static files that you can upload directly to any web server without needing Node.js/npm on the server.
 
+**✅ Centrally configured via `deployment.config.js`**  
+All paths, assets, resources, and contract information are automatically managed from one configuration file.
+
+**🔄 Multi-Project Ready**  
+Use the same codebase for multiple NFT collections by simply changing the configuration file!
+
 ## 🚀 Quick Start
 
 ### 1. Generate Static Files
@@ -16,7 +22,10 @@ npm install
 npm run deploy
 ```
 
-**This creates an `/out` folder with all static files ready for upload! 📦**
+**This automatically:**
+- ✅ Generates the PWA manifest from your contract configuration
+- ✅ Creates an `/out` folder with all static files ready for upload! 📦
+- ✅ Configures all asset paths based on your `DEPLOYMENT_PATH`
 
 ### 2. Upload to Server
 
@@ -131,11 +140,11 @@ git push origin main
 
 ### Apache (.htaccess)
 
-Create `.htaccess` in your upload folder:
+Create `.htaccess` in your `/war-chicks/` upload folder:
 ```apache
 RewriteEngine On
 
-# Handle client-side routing
+# Handle client-side routing for subdirectory deployment
 RewriteBase /war-chicks/
 RewriteRule ^index\.html$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
@@ -153,6 +162,9 @@ Header always set X-XSS-Protection "1; mode=block"
     ExpiresDefault "access plus 1 month"
 </filesMatch>
 ```
+
+**✅ Paths are automatically configured:**
+All CSS, JS, images, and other assets will load from `/war-chicks/` subdirectory.
 
 ### Nginx
 
@@ -197,35 +209,79 @@ your-server/
     └── .htaccess                    # ✅ Server config (if Apache)
 ```
 
-## 🔧 Customization for Different Paths
+## 🔧 Path Configuration (Centralized & Configurable)
 
-### If deploying to subdirectory
+### ✅ Single Configuration File
 
-Update `next.config.js`:
+The app uses a **centralized configuration** system for easy path management:
+
 ```javascript
-const nextConfig = {
-  // ... other config
-  basePath: '/war-chicks',
-  assetPrefix: '/war-chicks',
+// deployment.config.js (✅ Single source of truth)
+const CONTRACT_ADDRESS = '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8';
+const CONTRACT_NAME = 'Cosmic Meta War Chicks';
+const DEPLOYMENT_PATH = '/war-chicks';  // 👈 Change this to deploy anywhere!
+
+// Auto-generates all paths and configurations:
+const config = {
+  CONTRACT_ADDRESS,
+  CONTRACT_NAME,
+  // ... all contract settings
+  basePath: DEPLOYMENT_PATH,
+  assetPrefix: DEPLOYMENT_PATH,
+  paths: {
+    favicon: DEPLOYMENT_PATH + '/favicon.ico',
+    logo: DEPLOYMENT_PATH + '/logo.png',
+    // ... all other paths
+  }
 };
 ```
+
+**Current Configuration:**
+- Site URL: `https://mint.cosmicmeta.io/war-chicks/`
+- CSS files: `https://mint.cosmicmeta.io/war-chicks/_next/static/css/...`
+- JS files: `https://mint.cosmicmeta.io/war-chicks/_next/static/chunks/...`
+- Images: `https://mint.cosmicmeta.io/war-chicks/logo.png`
+- All paths automatically work! ✅
+
+### 🎯 Deploy to Different Paths
+
+**To change deployment path, edit ONE file:**
+
+```javascript
+// deployment.config.js
+const DEPLOYMENT_PATH = '/your-new-path';  // Change this line only!
+```
+
+**Examples:**
+- `'/nft-mint'` → `mint.cosmicmeta.io/nft-mint/`
+- `'/collection'` → `mint.cosmicmeta.io/collection/`
+- `''` → `mint.cosmicmeta.io/` (root domain)
 
 Then regenerate:
 ```bash
 npm run deploy
 ```
 
+**✅ Everything updates automatically:**
+- Next.js configuration
+- All asset paths
+- Favicon paths
+- Meta tags
+- PWA manifest
+- Open Graph images
+
 ## ✅ Verification Checklist
 
 After upload, test these URLs:
 
 **1. Functionality Tests:**
-- [ ] `https://mint.cosmicmeta.io/war-chicks/` - Main page loads
-- [ ] Logo displays correctly at the top
-- [ ] Favicon appears in browser tab
+- [ ] `https://mint.cosmicmeta.io/war-chicks/` - Main page loads ✅
+- [ ] All CSS/JS assets load from `/war-chicks/_next/...` ✅
+- [ ] Logo displays correctly at the top ✅
+- [ ] Favicon appears in browser tab ✅
+- [ ] Images load from correct paths (check Network tab) ✅
 - [ ] Wallet connection works (MetaMask, WalletConnect)
 - [ ] Contract diagnostics show green (if enabled)
-- [ ] Images load properly (logo, NFT placeholder)
 - [ ] Mobile responsive design works
 - [ ] Error messages display correctly
 

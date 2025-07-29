@@ -2,49 +2,50 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Providers } from '@/components/providers';
+import { DEPLOYMENT_PATHS } from '@/lib/deployment-paths';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Cosmic Meta War Chicks | NFT Mint',
-  description: 'Mint your unique Cosmic Meta War Chick - 2,222 generative art pieces living on the Ethereum blockchain. Join the battle!',
+  title: `${DEPLOYMENT_PATHS.CONTRACT_NAME} | NFT Mint`,
+  description: `Mint your unique ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} - ${DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. Join the battle!`,
   keywords: ['Cosmic Meta', 'War Chicks', 'NFT', 'mint', 'generative art', 'ethereum', 'blockchain', 'web3'],
-  authors: [{ name: 'Cosmic Meta' }],
+  authors: [{ name: 'Cosmic Meta Digital' }],
   icons: {
     icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
+      { url: DEPLOYMENT_PATHS.favicon, sizes: 'any' },
+      { url: DEPLOYMENT_PATHS.favicon16, type: 'image/png', sizes: '16x16' },
+      { url: DEPLOYMENT_PATHS.favicon32, type: 'image/png', sizes: '32x32' },
     ],
     apple: [
-      { url: '/apple-touch-icon.png', sizes: '180x180' },
+      { url: DEPLOYMENT_PATHS.appleIcon, sizes: '180x180' },
     ],
     other: [
-      { rel: 'android-chrome-192x192', url: '/android-chrome-192x192.png' },
-      { rel: 'android-chrome-512x512', url: '/android-chrome-512x512.png' },
+      { rel: 'android-chrome-192x192', url: DEPLOYMENT_PATHS.androidIcon192 },
+      { rel: 'android-chrome-512x512', url: DEPLOYMENT_PATHS.androidIcon512 },
     ],
   },
-  manifest: '/site.webmanifest',
+  manifest: DEPLOYMENT_PATHS.manifest,
   openGraph: {
-    title: 'Cosmic Meta War Chicks | NFT Mint',
-    description: 'Mint your unique Cosmic Meta War Chick - 2,222 generative art pieces living on the Ethereum blockchain. Join the battle!',
+    title: `${DEPLOYMENT_PATHS.CONTRACT_NAME} | NFT Mint`,
+    description: `Mint your unique ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} - ${DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. Join the battle!`,
     type: 'website',
-    url: 'https://mint.cosmicmeta.io/war-chicks',
-    siteName: 'Cosmic Meta War Chicks',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Cosmic Meta War Chicks NFT Collection',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Cosmic Meta War Chicks | NFT Mint',
-    description: 'Mint your unique Cosmic Meta War Chick - 2,222 generative art pieces living on the Ethereum blockchain. Join the battle!',
-    images: ['/og-image.png'],
+    url: DEPLOYMENT_PATHS.siteUrl,
+    siteName: DEPLOYMENT_PATHS.CONTRACT_NAME,
+          images: [
+        {
+          url: DEPLOYMENT_PATHS.ogImage,
+          width: 1200,
+          height: 630,
+          alt: `${DEPLOYMENT_PATHS.CONTRACT_NAME} NFT Collection`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${DEPLOYMENT_PATHS.CONTRACT_NAME} | NFT Mint`,
+      description: `Mint your unique ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} - ${DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. Join the battle!`,
+    images: [DEPLOYMENT_PATHS.ogImage],
   },
 };
 

@@ -2,11 +2,22 @@
 
 A beautiful, configurable NFT minting interface for any ERC-721 contract. Built with Next.js, TypeScript, and modern Web3 technologies.
 
+**🎯 Key Innovation**: Everything is controlled from **one configuration file** - contract details, branding, deployment paths, and SEO metadata. Deploy multiple NFT collections using the same codebase by simply changing the config!
+
+## ✨ What's New
+
+### 🆕 Centralized Configuration System
+- **One file controls everything**: `deployment.config.js`
+- Contract address, name, pricing → **UI text, SEO, paths** all update automatically
+- **Multi-project ready**: Deploy multiple collections with same codebase
+- **Zero configuration errors**: Single source of truth prevents mismatches
+
 ## Features
 
 - 🎨 **Beautiful UI**: Modern, responsive design with glass morphism effects
 - 🔗 **Multi-Wallet Support**: Connect with MetaMask, WalletConnect, and more
-- ⚙️ **Configurable**: Easy contract configuration through the UI
+- ⚙️ **Centralized Configuration**: Single file controls all contract and deployment settings
+- 🔄 **Multi-Project Ready**: Deploy multiple NFT collections with same codebase
 - 🌐 **Multi-Network**: Support for Ethereum, Polygon, Arbitrum, and more
 - 📱 **Mobile Friendly**: Fully responsive design
 - 🚀 **Fast & Reliable**: Built with Next.js and optimized Web3 libraries
@@ -17,6 +28,8 @@ A beautiful, configurable NFT minting interface for any ERC-721 contract. Built 
 - 📡 **Reliable RPC**: Multiple free public RPC endpoints for stable connectivity
 - ⚡ **Hydration Safe**: Optimized for server-side rendering with client-side Web3
 - 🎛️ **Configurable UI**: Toggle configuration panel for development vs production modes
+- 📁 **Static Export Ready**: Generate deployable static files for any web server
+- 🛣️ **Subdirectory Deployment**: Deploy to any URL path with automatic asset management
 
 ## Quick Start
 
@@ -33,7 +46,33 @@ npm install
 yarn install
 ```
 
-### 2. Environment Setup
+### 2. Configuration Setup
+
+#### **📁 Contract & Deployment Configuration**
+
+Edit `deployment.config.js` to configure your NFT project:
+
+```javascript
+// deployment.config.js - Single source of truth for everything!
+const CONTRACT_ADDRESS = '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8';
+const CONTRACT_NAME = 'Cosmic Meta War Chicks';
+const CONTRACT_SHORT_NAME = 'War Chicks';
+const CONTRACT_SYMBOL = 'CMWC';
+const CONTRACT_DESCRIPTION = 'Your collection description here...';
+const CONTRACT_MAX_SUPPLY = 2222;
+const CONTRACT_PRICE_PER_TOKEN = '12500000000000000'; // 0.0125 ETH in wei
+const CONTRACT_MAX_PER_WALLET = 10;
+const DEPLOYMENT_PATH = '/war-chicks'; // URL path: mint.cosmicmeta.io/war-chicks/
+```
+
+**This single file controls:**
+- ✅ Contract address and settings
+- ✅ All UI text and branding
+- ✅ SEO metadata and social sharing
+- ✅ Deployment URL path
+- ✅ PWA manifest generation
+
+#### **🔐 Environment Variables**
 
 ```bash
 # Create environment file
@@ -48,11 +87,6 @@ echo "NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_project_id_here" >> .env.local
 ```env
 # WalletConnect Project ID (Required for wallet connections)
 NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_project_id_here
-
-# Optional: Default contract configuration
-NEXT_PUBLIC_DEFAULT_CONTRACT_ADDRESS=0x...
-NEXT_PUBLIC_DEFAULT_PRICE_PER_TOKEN=50000000000000000
-NEXT_PUBLIC_DEFAULT_MAX_SUPPLY=10000
 ```
 
 **Get a free WalletConnect Project ID:**
@@ -73,42 +107,85 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## Configuration
 
-### Contract Configuration
+### 🎯 Centralized Configuration System
 
-You can configure the NFT contract in two ways:
+**Everything is controlled from ONE file: `deployment.config.js`**
 
-#### 1. Through the UI (Recommended)
-- Click "Configure Contract" in the left panel
-- Enter your contract address and settings
-- Save the configuration
-- Use the **Contract Diagnostics** panel to verify compatibility
+### Contract & Project Setup
 
-#### 2. Code Configuration
-Edit the default configuration in `src/app/page.tsx`:
+Edit `deployment.config.js` to configure your entire NFT project:
 
-```typescript
-// Feature flags
-const ENABLE_CONFIGURATION_PANEL = true; // Set to false to hide configuration section
-
-const DEFAULT_CONFIG: ContractConfig = {
-  address: '0x...', // Your contract address
-  name: 'Your NFT Collection',
-  symbol: 'SYMBOL',
-  description: 'Your collection description',
-  image: '/nft-placeholder.svg', // or '/nft-placeholder.gif'
-  maxSupply: 10000,
-  pricePerToken: '50000000000000000', // 0.05 ETH in wei
-  maxPerWallet: 10,
-  isPublicSaleActive: true,
-  isWhitelistSaleActive: false,
-};
+```javascript
+// deployment.config.js
+const CONTRACT_ADDRESS = '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8';
+const CONTRACT_NAME = 'Your Amazing NFT Collection';
+const CONTRACT_SHORT_NAME = 'Amazing NFTs';
+const CONTRACT_SYMBOL = 'ANFTS';
+const CONTRACT_DESCRIPTION = 'A stunning collection of unique digital art pieces...';
+const CONTRACT_MAX_SUPPLY = 5000;
+const CONTRACT_PRICE_PER_TOKEN = '50000000000000000'; // 0.05 ETH in wei
+const CONTRACT_MAX_PER_WALLET = 5;
+const DEPLOYMENT_PATH = '/amazing-nfts'; // URL: yoursite.com/amazing-nfts/
 ```
 
-> **Example**: The app is currently configured with CMWC (Cosmic Meta War Chicks) contract for demonstration purposes. Replace with your own contract details.
+### What Updates Automatically
 
-### Configuration Panel Toggle
+When you change `deployment.config.js`, these update automatically:
 
-You can enable/disable the configuration section using the feature flag:
+**🎨 UI & Branding:**
+- Page titles and descriptions
+- Header text and logo alt text
+- Collection name and supply count
+
+**🔧 Technical Configuration:**
+- Contract address and parameters
+- Deployment URL path
+- Asset paths and resources
+
+**📱 SEO & Social Media:**
+- Meta tags and descriptions
+- Open Graph images and titles
+- PWA manifest file
+
+**🌐 Multi-Project Deployment:**
+- Deploy same codebase for different collections
+- Each with unique branding and configuration
+- Different URL paths: `/collection1`, `/collection2`, etc.
+
+### 🔄 Multi-Project Example
+
+Deploy multiple NFT collections using the same codebase:
+
+**War Chicks Collection:**
+```javascript
+// deployment.config.js
+const CONTRACT_ADDRESS = '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8';
+const CONTRACT_NAME = 'Cosmic Meta War Chicks';
+const CONTRACT_SHORT_NAME = 'War Chicks';
+const DEPLOYMENT_PATH = '/war-chicks';
+```
+👆 Deploys to: `mint.cosmicmeta.io/war-chicks/`
+
+**Zombies Collection:**
+```javascript
+// deployment.config.js  
+const CONTRACT_ADDRESS = '0x1234567890abcdef1234567890abcdef12345678';
+const CONTRACT_NAME = 'Cosmic Meta Zombies';
+const CONTRACT_SHORT_NAME = 'Zombies';
+const DEPLOYMENT_PATH = '/zombies';
+```
+👆 Deploys to: `mint.cosmicmeta.io/zombies/`
+
+**Same codebase, different collections! Just change the config file! 🚀**
+
+### Production UI Toggle
+
+Control the configuration panel visibility:
+
+```typescript
+// src/app/page.tsx
+const ENABLE_CONFIGURATION_PANEL = false; // Set to true for development
+```
 
 **Development Mode** (`ENABLE_CONFIGURATION_PANEL = true`):
 - ✅ Shows configuration panel in left sidebar
@@ -204,25 +281,61 @@ Edit the network configuration in:
 
 ## Deployment
 
-### Vercel (Recommended)
+### 🚀 Quick Deployment Commands
+
+The build process automatically generates the PWA manifest and configures all paths:
 
 ```bash
-# Build the project
-npm run build
+# Development server
+npm run dev                    # Generates manifest + starts dev server
 
-# Deploy to Vercel
+# Production build (with server)
+npm run build                  # Generates manifest + builds for platforms like Vercel
+
+# Static export (for file upload)
+npm run deploy                 # Generates manifest + creates /out folder for upload
+```
+
+### Platform-Specific Deployment
+
+#### **Vercel (Recommended for dynamic hosting)**
+
+```bash
+# Build and deploy
+npm run build
 npx vercel
 ```
 
-### Other Platforms
+#### **Static File Hosting (cPanel, Apache, Nginx, etc.)**
+
+```bash
+# Generate static files
+npm run deploy
+
+# Upload the /out folder contents to your web server
+# See STATIC-DEPLOYMENT.md for detailed instructions
+```
+
+#### **Other Platforms (Netlify, AWS, etc.)**
 
 ```bash
 # Build for production
 npm run build
 
-# Start production server
+# Start production server (if needed)
 npm start
 ```
+
+### 📁 Deployment Path Configuration
+
+Change deployment URL by editing ONE line in `deployment.config.js`:
+
+```javascript
+const DEPLOYMENT_PATH = '/your-collection';  // yoursite.com/your-collection/
+const DEPLOYMENT_PATH = '';                  // yoursite.com/ (root domain)
+```
+
+All assets, metadata, and paths update automatically! ✨
 
 ## Technologies Used
 
@@ -329,4 +442,5 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
+Built with ❤️ for the Web3 community 
 Built with ❤️ for the Web3 community 
