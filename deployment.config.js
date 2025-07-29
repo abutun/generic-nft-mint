@@ -21,7 +21,7 @@ const CONTRACT_MAX_PER_WALLET = 10;
 const WEBSITE_URL = 'https://nft.cosmicmeta.io';
 const WHITEPAPER_URL = 'https://whitepaper.cosmicmeta.io/collections/war-chicks';
 
-const DEPLOYMENT_PATH = '/war-chicks';
+const DEPLOYMENT_PATH = '';
 
 // Auto-generate all path configurations
 const config = {
