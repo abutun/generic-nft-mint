@@ -17,6 +17,10 @@ export const DEPLOYMENT_PATHS = {
   CONTRACT_PRICE_PER_TOKEN: deploymentConfig.CONTRACT_PRICE_PER_TOKEN,
   CONTRACT_MAX_PER_WALLET: deploymentConfig.CONTRACT_MAX_PER_WALLET,
   
+  // External links
+  WEBSITE_URL: deploymentConfig.WEBSITE_URL,
+  WHITEPAPER_URL: deploymentConfig.WHITEPAPER_URL,
+  
   // Meta tag paths
   favicon: deploymentConfig.paths.favicon,
   favicon16: deploymentConfig.paths.favicon16,
