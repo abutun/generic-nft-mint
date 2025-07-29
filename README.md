@@ -16,6 +16,7 @@ A beautiful, configurable NFT minting interface for any ERC-721 contract. Built 
 - 🛠️ **Enhanced Error Handling**: Comprehensive error reporting and troubleshooting
 - 📡 **Reliable RPC**: Multiple free public RPC endpoints for stable connectivity
 - ⚡ **Hydration Safe**: Optimized for server-side rendering with client-side Web3
+- 🎛️ **Configurable UI**: Toggle configuration panel for development vs production modes
 
 ## Quick Start
 
@@ -86,6 +87,9 @@ You can configure the NFT contract in two ways:
 Edit the default configuration in `src/app/page.tsx`:
 
 ```typescript
+// Feature flags
+const ENABLE_CONFIGURATION_PANEL = true; // Set to false to hide configuration section
+
 const DEFAULT_CONFIG: ContractConfig = {
   address: '0x...', // Your contract address
   name: 'Your NFT Collection',
@@ -101,6 +105,22 @@ const DEFAULT_CONFIG: ContractConfig = {
 ```
 
 > **Example**: The app is currently configured with CMWC (Cosmic Meta War Chicks) contract for demonstration purposes. Replace with your own contract details.
+
+### Configuration Panel Toggle
+
+You can enable/disable the configuration section using the feature flag:
+
+**Development Mode** (`ENABLE_CONFIGURATION_PANEL = true`):
+- ✅ Shows configuration panel in left sidebar
+- ✅ Contract diagnostics available
+- ✅ Information panel with contract details
+- ✅ 3-column layout (sidebar + minting interface)
+
+**Production Mode** (`ENABLE_CONFIGURATION_PANEL = false`):
+- 🎯 Clean, simplified UI
+- 🎯 Minting interface centered and full-width
+- 🎯 No configuration options visible to end users
+- 🎯 Perfect for production deployments
 
 ### Required Contract Functions
 

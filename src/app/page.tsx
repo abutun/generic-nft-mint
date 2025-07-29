@@ -12,6 +12,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Settings, ExternalLink, Github } from 'lucide-react';
 import { ERC721_ABI } from '@/lib/contract-abi';
 
+// Feature flags
+const ENABLE_CONFIGURATION_PANEL = false; // Set to false to hide configuration section and simplify UI
+
+/**
+ * Configuration Panel Toggle
+ * 
+ * When ENABLE_CONFIGURATION_PANEL = true:
+ * - Shows configuration panel, diagnostics, and information panel in left sidebar
+ * - Uses 3-column grid layout (1/3 sidebar, 2/3 minting interface)
+ * 
+ * When ENABLE_CONFIGURATION_PANEL = false:
+ * - Hides entire configuration section
+ * - Centers minting interface with full width
+ * - Simplified UI for production/end-user deployments
+ * 
+ * Example usage:
+ * - Development: ENABLE_CONFIGURATION_PANEL = true (full features)
+ * - Production: ENABLE_CONFIGURATION_PANEL = false (clean interface)
+ */
+
 // Default configuration - users can modify this
 const DEFAULT_CONFIG: ContractConfig = {
   address: '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8', // CMWC contract
@@ -59,115 +79,102 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className={`grid grid-cols-1 ${ENABLE_CONFIGURATION_PANEL ? 'lg:grid-cols-3' : 'place-items-center'} gap-8`}>
           {/* Configuration Panel */}
-          <div className="lg:col-span-1">
-            <Card className="glass-effect border-white/20 mb-6">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Settings className="w-5 h-5" />
-                  Configuration
-                </CardTitle>
-                <CardDescription className="text-gray-300">
-                  Customize the contract settings
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <Button
-                  onClick={() => setIsConfiguring(!isConfiguring)}
-                  variant="outline"
-                  className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20"
-                >
-                  {isConfiguring ? 'Cancel' : 'Configure Contract'}
-                </Button>
+          {ENABLE_CONFIGURATION_PANEL && (
+            <div className="lg:col-span-1">
+              <Card className="glass-effect border-white/20 mb-6">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <Settings className="w-5 h-5" />
+                    Configuration
+                  </CardTitle>
+                  <CardDescription className="text-gray-300">
+                    Customize the contract settings
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Button
+                    onClick={() => setIsConfiguring(!isConfiguring)}
+                    variant="outline"
+                    className="w-full bg-white/10 border-white/20 text-white hover:bg-white/20"
+                  >
+                    {isConfiguring ? 'Cancel' : 'Configure Contract'}
+                  </Button>
 
-                {isConfiguring && (
-                  <div className="space-y-4">
-                    <div>
-                      <label className="text-white text-sm font-medium">Contract Address</label>
-                      <Input
-                        value={tempConfig.address}
-                        onChange={(e) => setTempConfig({ ...tempConfig, address: e.target.value })}
-                        placeholder="0x..."
-                        className="bg-white/10 border-white/20 text-white"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="text-white text-sm font-medium">Collection Name</label>
-                      <Input
-                        value={tempConfig.name}
-                        onChange={(e) => setTempConfig({ ...tempConfig, name: e.target.value })}
-                        className="bg-white/10 border-white/20 text-white"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="text-white text-sm font-medium">Price (ETH)</label>
-                      <Input
-                        type="number"
-                        step="0.001"
-                        value={Number(tempConfig.pricePerToken) / 1e18}
-                        onChange={(e) => setTempConfig({ 
-                          ...tempConfig, 
-                          pricePerToken: (Number(e.target.value) * 1e18).toString()
-                        })}
-                        className="bg-white/10 border-white/20 text-white"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="text-white text-sm font-medium">Max Supply</label>
-                      <Input
-                        type="number"
-                        value={tempConfig.maxSupply || ''}
-                        onChange={(e) => setTempConfig({ 
-                          ...tempConfig, 
-                          maxSupply: Number(e.target.value) 
-                        })}
-                        className="bg-white/10 border-white/20 text-white"
-                      />
-                    </div>
+                  {isConfiguring && (
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-white text-sm font-medium">Contract Address</label>
+                        <Input
+                          value={tempConfig.address}
+                          onChange={(e) => setTempConfig({ ...tempConfig, address: e.target.value })}
+                          placeholder="0x..."
+                          className="bg-white/10 border-white/20 text-white"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="text-white text-sm font-medium">Collection Name</label>
+                        <Input
+                          value={tempConfig.name}
+                          onChange={(e) => setTempConfig({ ...tempConfig, name: e.target.value })}
+                          className="bg-white/10 border-white/20 text-white"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="text-white text-sm font-medium">Price (ETH)</label>
+                        <Input
+                          type="number"
+                          step="0.001"
+                          value={Number(tempConfig.pricePerToken) / 1e18}
+                          onChange={(e) => setTempConfig({ 
+                            ...tempConfig, 
+                            pricePerToken: (Number(e.target.value) * 1e18).toString()
+                          })}
+                          className="bg-white/10 border-white/20 text-white"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="text-white text-sm font-medium">Max Supply</label>
+                        <Input
+                          type="number"
+                          value={tempConfig.maxSupply || ''}
+                          onChange={(e) => setTempConfig({ 
+                            ...tempConfig, 
+                            maxSupply: Number(e.target.value) 
+                          })}
+                          className="bg-white/10 border-white/20 text-white"
+                        />
+                      </div>
 
-                    <div className="flex gap-2">
-                      <Button
-                        onClick={handleSaveConfig}
-                        variant="gradient"
-                        size="sm"
-                        className="flex-1"
-                      >
-                        Save
-                      </Button>
-                      <Button
-                        onClick={handleResetConfig}
-                        variant="outline"
-                        size="sm"
-                        className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                      >
-                        Reset
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          onClick={handleSaveConfig}
+                          variant="gradient"
+                          size="sm"
+                          className="flex-1"
+                        >
+                          Save
+                        </Button>
+                        <Button
+                          onClick={handleResetConfig}
+                          variant="outline"
+                          size="sm"
+                          className="bg-white/10 border-white/20 text-white hover:bg-white/20"
+                        >
+                          Reset
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                )}
-              </CardContent>
+                  )}
+                              </CardContent>
             </Card>
 
-            {/* Contract Diagnostics */}
-            <ClientOnly fallback={
-              <Card className="glass-effect border-white/20">
-                <CardContent className="flex items-center justify-center p-8">
-                  <div className="text-center">
-                    <div className="w-6 h-6 mx-auto mb-2 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <p className="text-white/70 text-sm">Loading diagnostics...</p>
-                  </div>
-                </CardContent>
-              </Card>
-            }>
-              <ContractDiagnostics address={config.address} />
-            </ClientOnly>
-
             {/* Information Panel */}
-            <Card className="glass-effect border-white/20 mt-6">
+            <Card className="glass-effect border-white/20 mb-6">
               <CardHeader>
                 <CardTitle className="text-white">Information</CardTitle>
               </CardHeader>
@@ -196,10 +203,25 @@ export default function HomePage() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+
+            {/* Contract Diagnostics */}
+            <ClientOnly fallback={
+              <Card className="glass-effect border-white/20">
+                <CardContent className="flex items-center justify-center p-8">
+                  <div className="text-center">
+                    <div className="w-6 h-6 mx-auto mb-2 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <p className="text-white/70 text-sm">Loading diagnostics...</p>
+                  </div>
+                </CardContent>
+              </Card>
+            }>
+              <ContractDiagnostics address={config.address} />
+            </ClientOnly>
+            </div>
+          )}
 
           {/* Minting Interface */}
-          <div className="lg:col-span-2 flex items-center justify-center">
+          <div className={`${ENABLE_CONFIGURATION_PANEL ? 'lg:col-span-2' : 'w-full max-w-4xl'} flex items-start justify-center pt-0`}>
             <ClientOnly fallback={
               <div className="w-full max-w-md mx-auto">
                 <Card className="nft-card-glow bg-white/10 backdrop-blur-sm border-white/20">
