@@ -1,4 +1,4 @@
-# Generic NFT Mint
+# Generic NFT Minting Dapp
 
 A beautiful, configurable NFT minting interface for any ERC-721 contract. Built with Next.js, TypeScript, and modern Web3 technologies.
 
