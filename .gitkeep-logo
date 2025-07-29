@@ -23,4 +23,10 @@ Please add these files to the public/ folder before deploying:
 🛠️ Quick Generation:
 Use favicon.io or realfavicongenerator.net to create all favicon files from your logo.
 
+⚙️ Path Configuration:
+All asset paths are automatically managed by deployment.config.js
+- To deploy to a different path, edit: DEPLOYMENT_PATH in deployment.config.js
+- Current path: /war-chicks
+- All paths update automatically when you change the config!
+
 After adding all assets, you can delete this file. 
