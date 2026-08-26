@@ -1,16 +1,16 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Providers } from '@/components/providers';
+import { ClientProviders } from '@/components/client-providers';
 import { DEPLOYMENT_PATHS } from '@/lib/deployment-paths';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(DEPLOYMENT_PATHS.siteUrl),
   title: `${DEPLOYMENT_PATHS.CONTRACT_NAME} | NFT Mint`,
-  description: `Mint your unique ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} - ${DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. Join the battle!`,
-  keywords: ['Cosmic Meta', 'War Chicks', 'NFT', 'mint', 'generative art', 'ethereum', 'blockchain', 'web3'],
-  authors: [{ name: 'Cosmic Meta Digital' }],
+  description: `Mint a ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} from the ${DEPLOYMENT_PATHS.CONTRACT_NAME} collection on Ethereum.`,
+  keywords: ['NFT', 'mint', 'ERC-721', 'ethereum', 'blockchain', 'web3'],
   icons: {
     icon: [
       { url: DEPLOYMENT_PATHS.favicon, sizes: 'any' },
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   manifest: DEPLOYMENT_PATHS.manifest,
   openGraph: {
     title: `${DEPLOYMENT_PATHS.CONTRACT_NAME} | NFT Mint`,
-    description: `Mint your unique ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} - ${DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. Join the battle!`,
+    description: `Mint a ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} from the ${DEPLOYMENT_PATHS.CONTRACT_NAME} collection on Ethereum.`,
     type: 'website',
     url: DEPLOYMENT_PATHS.siteUrl,
     siteName: DEPLOYMENT_PATHS.CONTRACT_NAME,
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     twitter: {
       card: 'summary_large_image',
       title: `${DEPLOYMENT_PATHS.CONTRACT_NAME} | NFT Mint`,
-      description: `Mint your unique ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} - ${DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. Join the battle!`,
+      description: `Mint a ${DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME} from the ${DEPLOYMENT_PATHS.CONTRACT_NAME} collection on Ethereum.`,
     images: [DEPLOYMENT_PATHS.ogImage],
   },
 };
@@ -57,12 +57,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
+        <ClientProviders>
           <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
             {children}
           </div>
-        </Providers>
+        </ClientProviders>
       </body>
     </html>
   );
-} 
+}

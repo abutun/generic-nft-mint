@@ -10,6 +10,7 @@ export interface ContractConfig {
   maxPerWallet?: number;
   isPublicSaleActive: boolean;
   isWhitelistSaleActive: boolean;
+  saleStatus?: 'active' | 'sold-out';
 }
 
 export interface MintState {
@@ -43,4 +44,4 @@ export interface TokenMetadata {
     trait_type: string;
     value: string | number;
   }>;
-} 
+}

@@ -16,6 +16,9 @@
 # Misc
 .DS_Store
 *.pem
+*.key
+*.p12
+*.pfx
 
 # Debug
 npm-debug.log*
@@ -44,4 +47,4 @@ Thumbs.db
 
 # Logs
 logs
-*.log 
+*.log

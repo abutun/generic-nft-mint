@@ -14,7 +14,7 @@ import { ERC721_ABI } from '@/lib/contract-abi';
 import { DEPLOYMENT_PATHS } from '@/lib/deployment-paths';
 
 // Feature flags
-const ENABLE_CONFIGURATION_PANEL = true; // Production mode - clean UI for end users
+const ENABLE_CONFIGURATION_PANEL = false;
 
 /**
  * Configuration Panel Toggle
@@ -46,6 +46,7 @@ const DEFAULT_CONFIG: ContractConfig = {
   maxPerWallet: DEPLOYMENT_PATHS.CONTRACT_MAX_PER_WALLET,
   isPublicSaleActive: true,
   isWhitelistSaleActive: false,
+  saleStatus: DEPLOYMENT_PATHS.CONTRACT_SALE_STATUS,
 };
 
 export default function HomePage() {
@@ -79,8 +80,8 @@ export default function HomePage() {
             />
           </div>
           <p className="text-gray-300 text-lg max-w-2xl mx-auto">
-            Mint your unique <strong>{DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME}</strong> - {DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY} generative art pieces living on the Ethereum blockchain. 
-            Connect your wallet and join the battle!
+            Mint a unique <strong>{DEPLOYMENT_PATHS.CONTRACT_SHORT_NAME}</strong> from this {DEPLOYMENT_PATHS.CONTRACT_MAX_SUPPLY}-piece collection on Ethereum.
+            Connect your wallet to continue.
           </p>
           
           {/* External Links */}
@@ -289,4 +290,4 @@ export default function HomePage() {
       </div>
     </div>
   );
-} 
+}

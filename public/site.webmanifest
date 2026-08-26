@@ -1,7 +1,7 @@
 {
-  "name": "Cosmic Meta War Chicks",
-  "short_name": "War Chick",
-  "description": "Hand drawn of advanced 3D collectibles driven by powerful AI. Metaverse’s last hope. They have survived too long and know that any day could be their last.",
+  "name": "Example NFT Collection",
+  "short_name": "Example NFT",
+  "description": "Replace this example profile with your collection details before deployment.",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
