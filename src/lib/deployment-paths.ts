@@ -1,50 +1,64 @@
 /**
- * Client-side accessible deployment paths
- * Generated from deployment.config.js for use in React components
+ * Build-time collection values made available to server and client components.
+ * The config file itself is resolved by Node in next.config.js, allowing a
+ * deployment to keep its private brand profiles outside this repository.
  */
-
-// Import the main config - this will be resolved at build time
-const deploymentConfig = require('../../deployment.config.js');
-
-export const DEPLOYMENT_PATHS = {
-  // Contract configuration
-  CONTRACT_ADDRESS: deploymentConfig.CONTRACT_ADDRESS,
-  CONTRACT_NAME: deploymentConfig.CONTRACT_NAME,
-  CONTRACT_SHORT_NAME: deploymentConfig.CONTRACT_SHORT_NAME,
-  CONTRACT_SYMBOL: deploymentConfig.CONTRACT_SYMBOL,
-  CONTRACT_DESCRIPTION: deploymentConfig.CONTRACT_DESCRIPTION,
-  CONTRACT_MAX_SUPPLY: deploymentConfig.CONTRACT_MAX_SUPPLY,
-  CONTRACT_PRICE_PER_TOKEN: deploymentConfig.CONTRACT_PRICE_PER_TOKEN,
-  CONTRACT_MAX_PER_WALLET: deploymentConfig.CONTRACT_MAX_PER_WALLET,
-  
-  // External links
-  WEBSITE_URL: deploymentConfig.WEBSITE_URL,
-  WHITEPAPER_URL: deploymentConfig.WHITEPAPER_URL,
-  
-  // Meta tag paths
-  favicon: deploymentConfig.paths.favicon,
-  favicon16: deploymentConfig.paths.favicon16,
-  favicon32: deploymentConfig.paths.favicon32,
-  appleIcon: deploymentConfig.paths.appleIcon,
-  androidIcon192: deploymentConfig.paths.androidIcon192,
-  androidIcon512: deploymentConfig.paths.androidIcon512,
-  manifest: deploymentConfig.paths.manifest,
-  ogImage: deploymentConfig.paths.ogImage,
-  
-  // Asset paths
-  logo: deploymentConfig.paths.logo,
-  nftPlaceholder: deploymentConfig.paths.nftPlaceholder,
-  
-  // Site configuration
-  siteUrl: deploymentConfig.siteUrl,
-  basePath: deploymentConfig.basePath,
-  
-  // PWA configuration
-  startUrl: deploymentConfig.pwa.startUrl,
-  scope: deploymentConfig.pwa.scope,
-  
-  // Helper function
-  getAssetPath: deploymentConfig.getAssetPath
+type AssetPaths = {
+  favicon: string;
+  favicon16: string;
+  favicon32: string;
+  appleIcon: string;
+  androidIcon192: string;
+  androidIcon512: string;
+  manifest: string;
+  ogImage: string;
+  logo: string;
+  nftPlaceholder: string;
 };
 
-export default DEPLOYMENT_PATHS; 
+type SerializedDeploymentConfig = {
+  COLLECTION_SLUG: string;
+  CONTRACT_ADDRESS: string;
+  CONTRACT_NAME: string;
+  CONTRACT_SHORT_NAME: string;
+  CONTRACT_SYMBOL: string;
+  CONTRACT_DESCRIPTION: string;
+  CONTRACT_MAX_SUPPLY: number;
+  CONTRACT_PRICE_PER_TOKEN: string;
+  CONTRACT_MAX_PER_WALLET: number;
+  CONTRACT_SALE_STATUS: 'active' | 'sold-out';
+  WEBSITE_URL: string;
+  WHITEPAPER_URL: string;
+  basePath: string;
+  siteUrl: string;
+  pwa: { startUrl: string; scope: string };
+  paths: AssetPaths;
+};
+
+const rawConfig = process.env.NEXT_PUBLIC_MINT_DEPLOYMENT_CONFIG;
+
+if (!rawConfig) {
+  throw new Error('Missing build-time deployment configuration. Run the app through Next.js scripts.');
+}
+
+let deploymentConfig: SerializedDeploymentConfig;
+try {
+  deploymentConfig = JSON.parse(rawConfig) as SerializedDeploymentConfig;
+} catch {
+  throw new Error('Build-time deployment configuration is not valid JSON.');
+}
+
+const getAssetPath = (assetPath: string) => {
+  const cleanPath = assetPath.startsWith('/') ? assetPath.slice(1) : assetPath;
+  return deploymentConfig.basePath ? `${deploymentConfig.basePath}/${cleanPath}` : `/${cleanPath}`;
+};
+
+export const DEPLOYMENT_PATHS = {
+  ...deploymentConfig,
+  ...deploymentConfig.paths,
+  startUrl: deploymentConfig.pwa.startUrl,
+  scope: deploymentConfig.pwa.scope,
+  getAssetPath,
+};
+
+export default DEPLOYMENT_PATHS;

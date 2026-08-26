@@ -1,355 +1,129 @@
-# Deployment Guide: Cosmic Meta War Chicks
+# Deployment Guide
 
-## 🚀 Production Deployment to mint.cosmicmeta.io/war-chicks
+This guide deploys Generic NFT Mint without coupling the reusable codebase to a particular collection.
 
-This guide covers deploying the Cosmic Meta War Chicks minting interface to your production domain.
+## 1. Prepare the profile map
 
-## 📋 Pre-Deployment Checklist
+Create a private or project-owned `collections.config.js` outside this repository. The map can contain one or many collections.
 
-### ✅ Configuration Verification
-
-**1. Production Settings Enabled:**
-```typescript
-// src/app/page.tsx
-const ENABLE_CONFIGURATION_PANEL = false; // ✅ Clean UI for end users
-```
-
-**2. Contract Configuration:**
-```typescript
-const DEFAULT_CONFIG: ContractConfig = {
-  address: '0xcAdb229D7989Aa25D35A8eEe7539E08E43c55fE8', // ✅ War Chicks contract
-  name: 'Cosmic Meta War Chicks',
-  symbol: 'CMWC',
-  maxSupply: 2222,
-  pricePerToken: '12500000000000000', // 0.0125 ETH
-  // ... other settings
+```js
+module.exports = {
+  'collection-a': {
+    deploymentPath: '/collection-a',
+    siteOrigin: 'https://mint.example.com',
+    address: '0x1234567890abcdef1234567890abcdef12345678',
+    name: 'Collection A',
+    shortName: 'Collection A',
+    symbol: 'COLA',
+    description: 'Collection A description.',
+    maxSupply: 1000,
+    pricePerToken: '0',
+    maxPerWallet: 3,
+    websiteUrl: '',
+    whitepaperUrl: '',
+    saleStatus: 'active',
+  },
 };
 ```
 
-**3. Environment Variables:**
+Use the same `siteOrigin` for profiles hosted on the same domain and a distinct `deploymentPath` for each subdirectory. Use `deploymentPath: ''` only for the root site.
+
+## 2. Set public build configuration
+
+Configure a WalletConnect project ID. This is the only required public environment variable for wallet connectivity.
+
 ```env
-# .env.local or .env.production
-NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_production_project_id
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_project_id
 ```
 
-### 🖼️ Assets Preparation
+For a managed host, add this variable in the host's environment settings. Do not add wallet private keys, seed phrases, or owner credentials.
 
-**Replace Placeholder Image:**
-1. Replace `public/nft-placeholder.gif` with War Chicks artwork
-2. Optimize image for web (recommended: WebP format, <500KB)
-3. Update `image` field in config if using different filename
+## 3. Validate the selected collection
 
-**SEO Optimization:**
-- Update `public/favicon.ico` with War Chicks logo
-- Add `public/og-image.png` for social media sharing
-- Consider updating `src/app/layout.tsx` with proper meta tags
-
-## 🌐 Deployment Options
-
-### Option 1: Vercel (Recommended)
-
-**Quick Deploy:**
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Build and deploy
-npm run build
-vercel --prod
-
-# Set custom domain
-vercel domains add mint.cosmicmeta.io
-vercel alias your-deployment-url.vercel.app mint.cosmicmeta.io
-```
-
-**Environment Variables in Vercel:**
-1. Go to Vercel Dashboard → Project → Settings → Environment Variables
-2. Add: `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID` = `your_production_project_id`
-3. Redeploy to apply changes
-
-### Option 2: Custom Server/VPS
-
-**Build for Production:**
-```bash
-# Install dependencies
-npm install
-
-# Build the application
-npm run build
-
-# Start production server
-npm start
-```
-
-**Nginx Configuration Example:**
-```nginx
-server {
-    listen 80;
-    server_name mint.cosmicmeta.io;
-    
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-**SSL Certificate:**
-```bash
-# Using certbot for Let's Encrypt
-sudo certbot --nginx -d mint.cosmicmeta.io
-```
-
-### Option 3: Netlify
-
-**Deploy Steps:**
-1. Build: `npm run build && npm run export`
-2. Upload `out/` folder to Netlify
-3. Set custom domain: `mint.cosmicmeta.io`
-4. Add environment variables in Netlify dashboard
-
-## 🔧 Production Optimizations
-
-### Performance
-
-**1. Image Optimization:**
-```bash
-# Optimize images before deployment
-npm install -g imagemin-cli
-imagemin public/*.{jpg,png,gif} --out-dir=public/optimized
-```
-
-**2. Bundle Analysis:**
-```bash
-# Analyze bundle size
-npm run build
-npx @next/bundle-analyzer
-```
-
-### Security
-
-**1. Content Security Policy (CSP):**
-Add to `next.config.js`:
-```javascript
-const nextConfig = {
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
-          }
-        ]
-      }
-    ]
-  }
-}
-```
-
-**2. Environment Variables Security:**
-- Never expose private keys in environment variables
-- Use production WalletConnect Project ID
-- Verify all public environment variables
-
-## 📊 Monitoring & Analytics
-
-### Web3 Monitoring
-
-**1. Contract Monitoring:**
-- Monitor contract events for mint transactions
-- Track gas usage and transaction success rates
-- Set up alerts for contract errors
-
-**2. User Analytics:**
-```javascript
-// Add to components for tracking
-gtag('event', 'mint_attempt', {
-  contract_address: config.address,
-  quantity: quantity,
-  user_address: userAddress
-});
-```
-
-### Error Tracking
-
-**Sentry Integration:**
-```bash
-npm install @sentry/nextjs
-```
-
-```javascript
-// sentry.client.config.js
-import * as Sentry from '@sentry/nextjs';
-
-Sentry.init({
-  dsn: 'your-sentry-dsn',
-  environment: 'production'
-});
-```
-
-## 🧪 Testing Before Deploy
-
-### Pre-Production Tests
-
-**1. Testnet Testing:**
-- Deploy to Goerli/Sepolia first
-- Test all minting scenarios
-- Verify error handling
-
-**2. Load Testing:**
-```bash
-# Install artillery for load testing
-npm install -g artillery
-artillery quick --count 100 --num 10 https://mint.cosmicmeta.io/war-chicks
-```
-
-**3. Cross-Browser Testing:**
-- Test on Chrome, Firefox, Safari, Edge
-- Test mobile wallet apps (MetaMask Mobile, WalletConnect)
-- Verify responsive design
-
-## 🚨 Post-Deployment
-
-### Launch Checklist
-
-**1. Functionality Tests:**
-- [ ] Wallet connection works
-- [ ] Contract diagnostics show green
-- [ ] Minting transactions complete successfully
-- [ ] Error messages display correctly
-- [ ] Mobile responsiveness verified
-
-**2. Performance Tests:**
-- [ ] Page load time < 3 seconds
-- [ ] Images load properly
-- [ ] No console errors
-- [ ] Web3 provider connections stable
-
-**3. SEO & Social:**
-- [ ] Meta tags display correctly
-- [ ] Open Graph images work
-- [ ] Twitter cards render properly
-- [ ] Favicon loads correctly
-
-### Monitoring Setup
-
-**1. Uptime Monitoring:**
-```bash
-# Using UptimeRobot or similar
-curl -X POST "https://api.uptimerobot.com/v2/newMonitor" \
-  -d "api_key=your_api_key" \
-  -d "type=1" \
-  -d "url=https://mint.cosmicmeta.io/war-chicks" \
-  -d "friendly_name=War Chicks Mint Site"
-```
-
-**2. Error Alerts:**
-- Set up Sentry alerts for critical errors
-- Monitor wallet connection failures
-- Track transaction failure rates
-
-## 🎯 Domain-Specific Configuration
-
-### Subdomain Setup (mint.cosmicmeta.io)
-
-**DNS Configuration:**
-```
-Type: A
-Name: mint
-Value: [Your server IP]
-TTL: 300
-```
-
-**Or CNAME for services like Vercel:**
-```
-Type: CNAME  
-Name: mint
-Value: cname.vercel-dns.com
-TTL: 300
-```
-
-### Path-Based Routing (/war-chicks)
-
-If using path-based routing instead of subdomain:
-
-**Next.js Configuration:**
-```javascript
-// next.config.js
-const nextConfig = {
-  basePath: '/war-chicks',
-  assetPrefix: '/war-chicks'
-}
-```
-
-**Update all asset paths:**
-```typescript
-// Update image references
-image: '/war-chicks/nft-placeholder.gif'
-```
-
-## 🔄 Maintenance
-
-### Regular Updates
-
-**1. Dependencies:**
-```bash
-# Monthly security updates
-npm audit fix
-npm update
-```
-
-**2. RPC Endpoints:**
-- Monitor RPC provider uptime
-- Update endpoints if services change
-- Test fallback providers
-
-**3. Contract Monitoring:**
-- Verify contract functions still work
-- Monitor for any contract upgrades
-- Test minting periodically
-
-### Backup Strategy
-
-**1. Code Backup:**
-- Keep deployment branch in Git
-- Tag production releases
-- Document configuration changes
-
-**2. Environment Backup:**
-- Backup environment variables
-- Document deployment configuration
-- Keep deployment scripts updated
-
----
-
-## 🎉 Ready to Deploy!
-
-Your Cosmic Meta War Chicks minting site is now ready for production deployment to `mint.cosmicmeta.io/war-chicks`!
-
-### Quick Deploy Commands:
+From the repository root:
 
 ```bash
-# Final check
-npm run build
-npm run start
+MINT_CONFIG_PATH=/absolute/path/to/collections.config.js \
+MINT_COLLECTION=collection-a \
+npm run type-check
 
-# Deploy to Vercel
-vercel --prod
-
-# Or build for custom server
+MINT_CONFIG_PATH=/absolute/path/to/collections.config.js \
+MINT_COLLECTION=collection-a \
 npm run build
 ```
 
-**Remember:**
-- Test thoroughly before going live
-- Monitor closely after launch
-- Have rollback plan ready
-- Keep environment variables secure
+The build fails early for an unknown profile, a missing required field, an invalid address, or an unsafe deployment path.
 
-Good luck with your War Chicks launch! 🚀✨ 
+Check the generated `out/` folder:
+
+- `out/index.html` contains the selected collection's title and metadata.
+- Links and image URLs include the selected base path.
+- `out/site.webmanifest` has the selected name, scope, and start URL.
+- `out/_next/` exists and is referenced from the generated HTML.
+
+## 4. Put static assets in the final target
+
+Before publishing generated output, create the target directory and place that collection's art and icon files there. Required names are listed in [README.md](README.md#assets-and-collection-isolation).
+
+For a profile at `/collection-a`, the target should be:
+
+```text
+/var/www/mint/collection-a/
+```
+
+For a root profile, the target is the static site root itself:
+
+```text
+/var/www/mint/
+```
+
+## 5. Publish runtime output safely
+
+Use the provided publisher after a successful build:
+
+```bash
+MINT_CONFIG_PATH=/absolute/path/to/collections.config.js \
+MINT_COLLECTION=collection-a \
+MINT_STATIC_ROOT=/var/www/mint \
+npm run publish:collection
+```
+
+The script refuses to publish outside `MINT_STATIC_ROOT` and refuses a nonexistent target. It only overwrites generated runtime files:
+
+```text
+_next/
+404/
+404.html
+index.html
+index.txt
+site.webmanifest
+```
+
+It does not copy or remove collection art, logos, placeholders, or icons. This prevents one collection's images from being mixed into another's folder.
+
+## Managed hosts
+
+For Vercel, Netlify, Cloudflare Pages, or a CI platform:
+
+1. Set `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`.
+2. Make the external configuration file available in the build environment, or use a project-owned config file committed to that site's repository.
+3. Set `MINT_CONFIG_PATH` and `MINT_COLLECTION` for the one collection being built.
+4. Use `npm run build` as the build command.
+5. Publish the resulting `out/` directory at the desired root or subpath.
+
+Do not set `MINT_CONFIG_PATH` to a path that exists only on a developer laptop in a remote CI environment.
+
+## Pre-launch checklist
+
+- [ ] The profile points to the intended mainnet contract address.
+- [ ] `siteOrigin` and `deploymentPath` produce the exact public URL.
+- [ ] The target folder contains the intended collection images and icons.
+- [ ] `price()` on-chain is correct; a free mint has been set to zero on-chain by the owner.
+- [ ] `saleStatus` matches the intended website state.
+- [ ] Mint, wallet connect, rejected transaction, and wrong-network flows were tested.
+- [ ] Desktop and mobile pages load without missing assets.
+- [ ] No secret exists in the repository, browser bundle, or host environment exposed to clients.
+
+## Rollback
+
+Keep a dated copy of the prior static target before a release. If a release has a presentation or build issue, restore the previous runtime files and keep the collection assets intact. On-chain price and sale changes are independent of a static-site rollback.

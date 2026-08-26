@@ -4,10 +4,13 @@
   "private": true,
   "scripts": {
     "dev": "npm run generate-manifest && next dev",
-    "build": "npm run generate-manifest && next build",
+    "clean:build": "node scripts/clean-build.js",
+    "build": "npm run clean:build && npm run generate-manifest && next build",
+    "build:collection": "npm run build",
+    "publish:collection": "node scripts/publish-static-build.js",
     "start": "next start",
-    "export": "npm run generate-manifest && next build",
-    "deploy": "npm run generate-manifest && next build && echo 'Static files generated in /out folder - ready for upload!'",
+    "export": "npm run build",
+    "deploy": "npm run build && echo 'Static files generated in /out folder - ready for upload!'",
     "generate-manifest": "node scripts/generate-manifest.js",
     "lint": "next lint",
     "type-check": "tsc --noEmit"
@@ -39,4 +42,4 @@
     "eslint": "^8.51.0",
     "eslint-config-next": "^14.0.0"
   }
-} 
+}

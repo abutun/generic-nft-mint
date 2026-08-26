@@ -33,6 +33,9 @@ export function MintInterface({ config }: MintInterfaceProps) {
   const progress = collectionInfo.maxSupply > 0 
     ? (collectionInfo.totalSupply / collectionInfo.maxSupply) * 100 
     : 0;
+  const isSoldOut = config.saleStatus === 'sold-out' ||
+    (collectionInfo.maxSupply > 0 && collectionInfo.totalSupply >= collectionInfo.maxSupply);
+  const isFreeMint = collectionInfo.pricePerToken === '0';
 
   const handleMint = async () => {
     try {
@@ -52,7 +55,7 @@ export function MintInterface({ config }: MintInterfaceProps) {
 
   const canMint = isConnected && 
     collectionInfo.isPublicSaleActive && 
-    collectionInfo.totalSupply < collectionInfo.maxSupply &&
+    !isSoldOut &&
     !mintState.isLoading;
 
   return (
@@ -96,7 +99,7 @@ export function MintInterface({ config }: MintInterfaceProps) {
             <div className="flex justify-between text-sm">
               <span className="text-gray-400">Price</span>
               <span className="text-white font-medium">
-                {formatPrice(collectionInfo.pricePerToken)}
+                {isFreeMint ? 'FREE to MINT!' : formatPrice(collectionInfo.pricePerToken)}
               </span>
             </div>
 
@@ -152,6 +155,13 @@ export function MintInterface({ config }: MintInterfaceProps) {
             <div className="flex items-center gap-2 p-3 bg-red-500/20 border border-red-500/30 rounded-lg">
               <AlertCircle className="w-4 h-4 text-red-400" />
               <p className="text-red-400 text-sm">Contract is currently paused</p>
+            </div>
+          )}
+
+          {isSoldOut && (
+            <div className="flex items-center gap-2 p-3 bg-slate-500/20 border border-slate-400/30 rounded-lg" role="status">
+              <AlertCircle className="w-4 h-4 text-slate-200" />
+              <p className="text-slate-100 text-sm font-semibold">This collection is sold out.</p>
             </div>
           )}
 
@@ -211,14 +221,18 @@ export function MintInterface({ config }: MintInterfaceProps) {
             <div className="text-center">
               <span className="text-gray-400 text-sm">Total: </span>
               <span className="text-white font-bold">
-                {formatPrice(totalPrice.toString())}
+                {isFreeMint ? 'FREE' : formatPrice(totalPrice.toString())}
               </span>
             </div>
           </div>
         </CardContent>
 
         <CardFooter className="flex flex-col gap-3">
-          {!isConnected ? (
+          {isSoldOut ? (
+            <Button disabled variant="outline" size="lg" className="w-full bg-white/10 border-white/20 text-white">
+              SOLD OUT
+            </Button>
+          ) : !isConnected ? (
             <ConnectButton.Custom>
               {({ openConnectModal, connectModalOpen }) => (
                 <Button 
@@ -268,4 +282,4 @@ export function MintInterface({ config }: MintInterfaceProps) {
       </Card>
     </div>
   );
-} 
+}

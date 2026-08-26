@@ -1,79 +1,113 @@
 /**
- * Deployment Configuration
- * 
- * Change DEPLOYMENT_PATH to deploy to different subdirectories
- * Examples:
- * - '/war-chicks' → mint.cosmicmeta.io/war-chicks/
- * - '/nft-mint' → mint.cosmicmeta.io/nft-mint/
- * - '' → mint.cosmicmeta.io/ (root domain)
+ * Resolves one collection profile for the current build.
+ *
+ * MINT_COLLECTION chooses a key in the active config file. MINT_CONFIG_PATH
+ * optionally points at a brand-specific config file outside this repository.
  */
+const path = require('path');
 
-const CONTRACT_ADDRESS = '0xcadb229d7989aa25d35a8eee7539e08e43c55fe8';
-const CONTRACT_NAME = 'Cosmic Meta War Chicks';
-const CONTRACT_SHORT_NAME = 'War Chick';
-const CONTRACT_SYMBOL = 'CMWC';
-const CONTRACT_DESCRIPTION = 'Hand drawn of advanced 3D collectibles driven by powerful AI. Metaverse’s last hope. They have survived too long and know that any day could be their last.';
-const CONTRACT_MAX_SUPPLY = 2222;
-const CONTRACT_PRICE_PER_TOKEN = '12500000000000000'; // 0.0125 ETH
-const CONTRACT_MAX_PER_WALLET = 10;
+const defaultConfigPath = path.join(__dirname, 'collections.config.js');
+const configPath = process.env.MINT_CONFIG_PATH
+  ? path.resolve(process.cwd(), process.env.MINT_CONFIG_PATH)
+  : defaultConfigPath;
 
-// External links (set to empty string to hide the link)
-const WEBSITE_URL = 'https://nft.cosmicmeta.io';
-const WHITEPAPER_URL = 'https://whitepaper.cosmicmeta.io/collections/war-chicks';
+let collectionConfigs;
+try {
+  collectionConfigs = require(configPath);
+} catch (error) {
+  throw new Error(`Unable to load collection config at ${configPath}: ${error.message}`);
+}
 
-const DEPLOYMENT_PATH = '';
+const collectionSlug = process.env.MINT_COLLECTION || 'default';
+const collection = collectionConfigs[collectionSlug];
 
-// Auto-generate all path configurations
-const config = {
-  // Contract configuration
-  CONTRACT_ADDRESS,
-  CONTRACT_NAME,
-  CONTRACT_SHORT_NAME,
-  CONTRACT_SYMBOL,
-  CONTRACT_DESCRIPTION,
-  CONTRACT_MAX_SUPPLY,
-  CONTRACT_PRICE_PER_TOKEN,
-  CONTRACT_MAX_PER_WALLET,
-  
-  // External links
-  WEBSITE_URL,
-  WHITEPAPER_URL,
-  
-  // Main deployment path
-  basePath: DEPLOYMENT_PATH,
-  
-  // Asset prefix (same as basePath for subdirectory deployments)
-  assetPrefix: DEPLOYMENT_PATH,
-  
-  // Helper function to create asset paths
-  getAssetPath: (path) => {
-    // Remove leading slash from path if present
-    const cleanPath = path.startsWith('/') ? path.slice(1) : path;
-    return DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/${cleanPath}` : `/${cleanPath}`;
-  },
-  
-  // Common asset paths
-  paths: {
-    favicon: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/favicon.ico` : '/favicon.ico',
-    favicon16: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/favicon-16x16.png` : '/favicon-16x16.png',
-    favicon32: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/favicon-32x32.png` : '/favicon-32x32.png',
-    appleIcon: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/apple-touch-icon.png` : '/apple-touch-icon.png',
-    androidIcon192: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/android-chrome-192x192.png` : '/android-chrome-192x192.png',
-    androidIcon512: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/android-chrome-512x512.png` : '/android-chrome-512x512.png',
-    manifest: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/site.webmanifest` : '/site.webmanifest',
-    ogImage: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/og-image.png` : '/og-image.png',
-    logo: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/logo.png` : '/logo.png',
-    nftPlaceholder: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/nft-placeholder.gif` : '/nft-placeholder.gif'
-  },
-  
-  // Full URL configuration
-  siteUrl: `https://mint.cosmicmeta.io${DEPLOYMENT_PATH}`,
-  
-  // PWA configuration
-  pwa: {
-    startUrl: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/` : '/',
-    scope: DEPLOYMENT_PATH ? `${DEPLOYMENT_PATH}/` : '/'
+if (!collection) {
+  throw new Error(
+    `Unknown MINT_COLLECTION "${collectionSlug}" in ${configPath}. Available collections: ${Object.keys(collectionConfigs).join(', ')}`
+  );
+}
+
+const requiredFields = [
+  'deploymentPath',
+  'siteOrigin',
+  'address',
+  'name',
+  'shortName',
+  'symbol',
+  'description',
+  'maxSupply',
+  'pricePerToken',
+  'maxPerWallet',
+  'saleStatus',
+];
+
+for (const field of requiredFields) {
+  const isEmptyPath = field === 'deploymentPath' && collection[field] === '';
+  if ((collection[field] === undefined || collection[field] === null || collection[field] === '') && !isEmptyPath) {
+    throw new Error(`Collection "${collectionSlug}" is missing required field "${field}".`);
   }
+}
+
+if (!/^0x[a-fA-F0-9]{40}$/.test(collection.address)) {
+  throw new Error(`Collection "${collectionSlug}" has an invalid contract address.`);
+}
+
+if (!['active', 'sold-out'].includes(collection.saleStatus)) {
+  throw new Error(`Collection "${collectionSlug}" must use saleStatus "active" or "sold-out".`);
+}
+
+function normalizeDeploymentPath(value) {
+  if (value === '') return '';
+  if (typeof value !== 'string' || value.includes('..')) {
+    throw new Error(`Collection "${collectionSlug}" has an unsafe deploymentPath.`);
+  }
+
+  const normalized = `/${value.replace(/^\/+|\/+$/g, '')}`;
+  if (normalized === '/') return '';
+  return normalized;
+}
+
+const deploymentPath = normalizeDeploymentPath(collection.deploymentPath);
+const siteOrigin = collection.siteOrigin.replace(/\/+$/, '');
+const getAssetPath = (assetPath) => {
+  const cleanPath = assetPath.startsWith('/') ? assetPath.slice(1) : assetPath;
+  return deploymentPath ? `${deploymentPath}/${cleanPath}` : `/${cleanPath}`;
 };
 
-module.exports = config; 
+const paths = {
+  favicon: getAssetPath('favicon.ico'),
+  favicon16: getAssetPath('favicon-16x16.png'),
+  favicon32: getAssetPath('favicon-32x32.png'),
+  appleIcon: getAssetPath('apple-touch-icon.png'),
+  androidIcon192: getAssetPath('android-chrome-192x192.png'),
+  androidIcon512: getAssetPath('android-chrome-512x512.png'),
+  manifest: getAssetPath('site.webmanifest'),
+  ogImage: getAssetPath('og-image.png'),
+  logo: getAssetPath('logo.png'),
+  nftPlaceholder: getAssetPath('nft-placeholder.gif'),
+};
+
+module.exports = {
+  COLLECTION_SLUG: collectionSlug,
+  CONFIG_PATH: configPath,
+  CONTRACT_ADDRESS: collection.address,
+  CONTRACT_NAME: collection.name,
+  CONTRACT_SHORT_NAME: collection.shortName,
+  CONTRACT_SYMBOL: collection.symbol,
+  CONTRACT_DESCRIPTION: collection.description,
+  CONTRACT_MAX_SUPPLY: collection.maxSupply,
+  CONTRACT_PRICE_PER_TOKEN: collection.pricePerToken,
+  CONTRACT_MAX_PER_WALLET: collection.maxPerWallet,
+  CONTRACT_SALE_STATUS: collection.saleStatus,
+  WEBSITE_URL: collection.websiteUrl || '',
+  WHITEPAPER_URL: collection.whitepaperUrl || '',
+  basePath: deploymentPath,
+  assetPrefix: deploymentPath,
+  getAssetPath,
+  paths,
+  siteUrl: `${siteOrigin}${deploymentPath}`,
+  pwa: {
+    startUrl: deploymentPath ? `${deploymentPath}/` : '/',
+    scope: deploymentPath ? `${deploymentPath}/` : '/',
+  },
+};
