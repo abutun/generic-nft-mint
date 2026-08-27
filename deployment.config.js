@@ -101,6 +101,8 @@ module.exports = {
   CONTRACT_SALE_STATUS: collection.saleStatus,
   WEBSITE_URL: collection.websiteUrl || '',
   WHITEPAPER_URL: collection.whitepaperUrl || '',
+  MARKETPLACE_URL: collection.marketplaceUrl || '',
+  MARKETPLACE_NAME: collection.marketplaceName || '',
   basePath: deploymentPath,
   assetPrefix: deploymentPath,
   getAssetPath,

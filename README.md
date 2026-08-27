@@ -54,6 +54,8 @@ module.exports = {
     maxPerWallet: 3,
     websiteUrl: 'https://example.com', // use '' to hide
     whitepaperUrl: '', // use '' to hide
+    marketplaceUrl: 'https://opensea.io/collection/my-collection', // optional
+    marketplaceName: 'OpenSea', // optional CTA label
     saleStatus: 'active', // 'active' or 'sold-out'
   },
 };
@@ -109,7 +111,7 @@ android-chrome-512x512.png
 og-image.png
 ```
 
-The static publisher copies only the generated application runtime (`_next`, HTML, text export, and manifest). It deliberately leaves the assets above untouched, so a publish for one profile cannot replace another collection's artwork.
+The static publisher copies only the generated application runtime (`_next`, HTML, text export, and manifest). It deliberately leaves the assets above untouched, so a publish for one profile cannot replace another collection's artwork. A sold-out profile with `marketplaceUrl` displays an external marketplace CTA in a new tab.
 
 ## Contract compatibility
 

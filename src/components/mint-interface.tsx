@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAccount, useNetwork } from 'wagmi';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { Plus, Minus, Wallet, ExternalLink, AlertCircle, CheckCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { useContract } from '@/hooks/useContract';
@@ -229,9 +229,21 @@ export function MintInterface({ config }: MintInterfaceProps) {
 
         <CardFooter className="flex flex-col gap-3">
           {isSoldOut ? (
-            <Button disabled variant="outline" size="lg" className="w-full bg-white/10 border-white/20 text-white">
-              SOLD OUT
-            </Button>
+            config.marketplaceUrl ? (
+              <a
+                href={config.marketplaceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'w-full bg-slate-500/30 border-slate-300/40 text-white hover:bg-slate-400/30 hover:text-white')}
+              >
+                <ExternalLink className="w-4 h-4 mr-2" />
+                View on {config.marketplaceName || 'Marketplace'}
+              </a>
+            ) : (
+              <Button disabled variant="outline" size="lg" className="w-full bg-white/10 border-white/20 text-white">
+                SOLD OUT
+              </Button>
+            )
           ) : !isConnected ? (
             <ConnectButton.Custom>
               {({ openConnectModal, connectModalOpen }) => (

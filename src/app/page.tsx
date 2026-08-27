@@ -47,6 +47,8 @@ const DEFAULT_CONFIG: ContractConfig = {
   isPublicSaleActive: true,
   isWhitelistSaleActive: false,
   saleStatus: DEPLOYMENT_PATHS.CONTRACT_SALE_STATUS,
+  marketplaceUrl: DEPLOYMENT_PATHS.MARKETPLACE_URL,
+  marketplaceName: DEPLOYMENT_PATHS.MARKETPLACE_NAME,
 };
 
 export default function HomePage() {

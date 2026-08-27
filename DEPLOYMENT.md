@@ -21,6 +21,8 @@ module.exports = {
     maxPerWallet: 3,
     websiteUrl: '',
     whitepaperUrl: '',
+    marketplaceUrl: '',
+    marketplaceName: '',
     saleStatus: 'active',
   },
 };

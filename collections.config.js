@@ -21,6 +21,8 @@ module.exports = {
     maxPerWallet: 3,
     websiteUrl: '',
     whitepaperUrl: '',
+    marketplaceUrl: '',
+    marketplaceName: '',
     saleStatus: 'active',
   },
   'second-collection': {
@@ -36,6 +38,8 @@ module.exports = {
     maxPerWallet: 2,
     websiteUrl: '',
     whitepaperUrl: '',
+    marketplaceUrl: '',
+    marketplaceName: '',
     saleStatus: 'active',
   },
 };

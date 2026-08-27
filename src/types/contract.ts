@@ -11,6 +11,8 @@ export interface ContractConfig {
   isPublicSaleActive: boolean;
   isWhitelistSaleActive: boolean;
   saleStatus?: 'active' | 'sold-out';
+  marketplaceUrl?: string;
+  marketplaceName?: string;
 }
 
 export interface MintState {
