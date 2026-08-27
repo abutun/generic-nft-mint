@@ -32,7 +32,13 @@ for (const entry of ['_next', '404', '404.html', 'index.html', 'index.txt', 'sit
   const source = path.join(outDir, entry);
   if (!fs.existsSync(source)) continue;
 
-  fs.cpSync(source, path.join(targetDir, entry), {
+  const destination = path.join(targetDir, entry);
+
+  // A build can rename hashed chunks. Replace each generated runtime entry so
+  // an old, no-longer-referenced bundle cannot survive a subsequent publish.
+  fs.rmSync(destination, { recursive: true, force: true });
+
+  fs.cpSync(source, destination, {
     recursive: true,
     force: true,
   });

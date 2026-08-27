@@ -21,8 +21,6 @@ module.exports = {
     maxPerWallet: 3,
     websiteUrl: '',
     whitepaperUrl: '',
-    projectUrl: '',
-    projectName: '',
     marketplaceUrl: '',
     marketplaceName: '',
     saleStatus: 'active',
@@ -92,7 +90,7 @@ MINT_STATIC_ROOT=/var/www/mint \
 npm run publish:collection
 ```
 
-The script refuses to publish outside `MINT_STATIC_ROOT` and refuses a nonexistent target. It only overwrites generated runtime files:
+The script refuses to publish outside `MINT_STATIC_ROOT` and refuses a nonexistent target. It replaces only generated runtime files, clearing stale hashed bundles while preserving collection artwork:
 
 ```text
 _next/
