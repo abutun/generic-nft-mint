@@ -29,6 +29,8 @@ type SerializedDeploymentConfig = {
   CONTRACT_SALE_STATUS: 'active' | 'sold-out';
   WEBSITE_URL: string;
   WHITEPAPER_URL: string;
+  PROJECT_URL: string;
+  PROJECT_NAME: string;
   MARKETPLACE_URL: string;
   MARKETPLACE_NAME: string;
   basePath: string;

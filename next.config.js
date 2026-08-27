@@ -12,6 +12,8 @@ const clientDeploymentConfig = {
   CONTRACT_SALE_STATUS: deploymentConfig.CONTRACT_SALE_STATUS,
   WEBSITE_URL: deploymentConfig.WEBSITE_URL,
   WHITEPAPER_URL: deploymentConfig.WHITEPAPER_URL,
+  PROJECT_URL: deploymentConfig.PROJECT_URL,
+  PROJECT_NAME: deploymentConfig.PROJECT_NAME,
   MARKETPLACE_URL: deploymentConfig.MARKETPLACE_URL,
   MARKETPLACE_NAME: deploymentConfig.MARKETPLACE_NAME,
   basePath: deploymentConfig.basePath,

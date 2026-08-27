@@ -54,6 +54,8 @@ module.exports = {
     maxPerWallet: 3,
     websiteUrl: 'https://example.com', // use '' to hide
     whitepaperUrl: '', // use '' to hide
+    projectUrl: 'https://example.com', // optional project home CTA
+    projectName: 'Example Project', // optional project home label
     marketplaceUrl: 'https://opensea.io/collection/my-collection', // optional
     marketplaceName: 'OpenSea', // optional CTA label
     saleStatus: 'active', // 'active' or 'sold-out'

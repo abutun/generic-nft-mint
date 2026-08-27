@@ -87,8 +87,19 @@ export default function HomePage() {
           </p>
           
           {/* External Links */}
-          {(DEPLOYMENT_PATHS.WEBSITE_URL || DEPLOYMENT_PATHS.WHITEPAPER_URL) && (
+          {(DEPLOYMENT_PATHS.PROJECT_URL || DEPLOYMENT_PATHS.WEBSITE_URL || DEPLOYMENT_PATHS.WHITEPAPER_URL) && (
             <div className="flex justify-center gap-4 mt-8">
+              {DEPLOYMENT_PATHS.PROJECT_URL && (
+                <a
+                  href={DEPLOYMENT_PATHS.PROJECT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-effect border border-white/20 px-6 py-3 rounded-lg hover:bg-white/10 transition-all duration-200 flex items-center gap-2 text-white hover:border-cyan-300/60"
+                >
+                  <ExternalLink className="w-4 h-4" />
+                  {DEPLOYMENT_PATHS.PROJECT_NAME || 'Project Home'}
+                </a>
+              )}
               {DEPLOYMENT_PATHS.WEBSITE_URL && (
                 <a
                   href={DEPLOYMENT_PATHS.WEBSITE_URL}
